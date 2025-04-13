@@ -87,7 +87,7 @@
 <div class="container">
     <div class="header">
         <h1>{{ $nav }}</h1>
-        <p> <b>Default Password</b> : defaultPassword123 </p>
+        <p>Default Patient Account Password: <b>defaultPassword123</b> </p>
         <div>
             <a href="{{ route('adminPatient.create') }}" class="btn btn-primary" style="margin-right: 10px;">Add Patient</a>
             <a href="{{ route('adminPatient.patient_export') }}" class="btn btn-secondary">Export PDF</a>

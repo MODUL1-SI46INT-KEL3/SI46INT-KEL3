@@ -16,7 +16,7 @@ class AdminMedicineController extends Controller
     public function create() 
     {
         $nav = 'Add Medicine';
-        return view('admins.adminmedicine.create', compact('nav'));
+        return view('admins.adminmedicine.create', compact('nav')); 
     }
 
     public function store(Request $request)

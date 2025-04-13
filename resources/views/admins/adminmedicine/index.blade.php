@@ -113,3 +113,5 @@
     </table>
 </div>
 @endsection
+
+<!-- this is the main view for when an admin want to CRUD medicine -->

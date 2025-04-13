@@ -57,3 +57,5 @@
     </form>
 </div>
 @endsection
+
+<!-- this is the view for when an admin want to add new medicine -->

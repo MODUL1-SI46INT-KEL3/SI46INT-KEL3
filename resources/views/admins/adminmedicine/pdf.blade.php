@@ -52,3 +52,5 @@
     </table>
 </body>
 </html>
+
+<!-- this is the view (button) for when an admin want to export medicine -->

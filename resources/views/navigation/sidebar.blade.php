@@ -49,7 +49,7 @@
                 <a href="{{ route('adminmedicine.index') }}" class="sidebar-link">Medicine</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Doctor</a>
+            <a href="{{ route('admindoctors.index') }}" class="sidebar-link">Doctor</a>
             </li>
             <li>
                 <a href="/" class="sidebar-link">Symptom</a>

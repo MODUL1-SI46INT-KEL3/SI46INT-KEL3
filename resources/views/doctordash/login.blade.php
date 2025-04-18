@@ -25,11 +25,10 @@
 
     <div class="form_body">
         <div class="login_head">
-            <h1>Login to Account</h1>
+            <h1>Login to Account (Doctor Portal)</h1>
             <hr>
         </div>
 
-        <p class="register_link">Don't have an account? &nbsp<a href="{{ url('patients/create') }}"> Register here</a> </p>
         <div class="login_body">
             <div class="circles">
                 <div class="c1">
@@ -39,7 +38,7 @@
                     <img src="{{ asset('icons/circle 2.png') }}">
                 </div>
             </div>
-            <form action="{{ route('patients.login') }}" method="POST">
+            <form action="{{ route('doctordash.login') }}" method="POST">
                 @csrf
                 <div class="form_box">
                     <div class="form_input">
@@ -72,9 +71,9 @@
                     <a href="{{ url('admins/login') }}">Or Log In as Admin</a>
                 </div> 
 
-                <div class="login_doctor">
-                    <a href="{{ url('doctordash/login') }}">Or Log In as Doctor</a>
-                </div>
+                <div class="login_patient">
+                    <a href="{{ url('patients/login') }}">Or Log In as Patient</a>
+                </div> 
             </form>
         </div>
     </div>

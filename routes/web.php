@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\DoctorDashboardController;
 use App\Http\Controllers\AdminDoctorController;
 use App\Http\Controllers\AdminPatientController;
 use App\Http\Controllers\AdminMedicineController;
@@ -40,6 +41,12 @@ Route::get('/admindoctors', [MedicineController::class, 'index'])->name('admindo
 Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
 Route::get('/admindoctors/export', [PdfController::class, 'doctor_exportPdf'])->name('admindoctors.doctor_export');
 
+// Doctor Dashboard
+Route::get('/doctordash/home', [DoctorDashboardController::class, 'home'])->name('doctordash.home');
+Route::get('/doctordash', [DoctorDashboardController::class, 'index'])->name('doctordash.index');
+Route::get('/doctordash/login', [AuthController::class, 'showDoctorLoginForm'])->name('doctordash.login.form');
+Route::post('/doctordash/login', [AuthController::class, 'doctorLogin'])->name('doctordash.login');
+
 // Medicine 
 Route::get('/adminmedicine', [MedicineController::class, 'index'])->name('adminmedicine.index');
 
@@ -55,5 +62,6 @@ Route::resource('patients', PatientController::class);
 Route::resource('doctors', DoctorController::class);
 Route::resource('admindoctors', AdminDoctorController::class);
 Route::resource('adminmedicine', AdminMedicineController::class);
+Route::resource('doctordash', DoctorDashboardController::class);
 
 ?>

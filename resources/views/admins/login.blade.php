@@ -70,7 +70,7 @@
                 </div> 
 
                 <div class="login_doctor">
-                    <a href="/">Or Log In as Doctor</a>
+                    <a href="{{ url('doctordash/login') }}">Or Log In as Doctor</a>
                 </div>
             </form>
         </div>

@@ -73,7 +73,7 @@
                 <a href="/" class="sidebar-link">Feedback & Review</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Website Content</a>
+                <a href="{{ route('adminarticle.index') }}" class="sidebar-link">Website Articles</a>
             </li>
         </ul>
         <a href="{{ route('views.landing') }}" class="logout">

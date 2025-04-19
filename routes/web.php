@@ -9,6 +9,8 @@ use App\Http\Controllers\DoctorDashboardController;
 use App\Http\Controllers\AdminDoctorController;
 use App\Http\Controllers\AdminPatientController;
 use App\Http\Controllers\AdminMedicineController;
+use App\Http\Controllers\AdminArticleController;
+
 
 use App\Http\Controllers\PdfController;
 
@@ -47,6 +49,13 @@ Route::get('/doctordash', [DoctorDashboardController::class, 'index'])->name('do
 Route::get('/doctordash/login', [AuthController::class, 'showDoctorLoginForm'])->name('doctordash.login.form');
 Route::post('/doctordash/login', [AuthController::class, 'doctorLogin'])->name('doctordash.login');
 
+//Article
+Route::get('/adminarticle', [AdminArticleController::class, 'index'])->name('adminarticle.index');
+Route::get('/adminarticle/create', [AdminArticleController::class, 'create'])->name('adminarticle.create');
+Route::post('/adminarticle', [AdminArticleController::class, 'store'])->name('adminarticle.store');
+Route::get('/articles', [AdminArticleController::class, 'generalIndex'])->name('adminarticle.generalIndex');
+
+
 // Medicine 
 Route::get('/adminmedicine', [MedicineController::class, 'index'])->name('adminmedicine.index');
 
@@ -57,11 +66,13 @@ Route::get('/adminmedicine/export', [PdfController::class, 'medicine_exportPdf']
 
 // Resource Routes
 Route::resource('admins', AdminController::class);
+Route::resource('adminarticle', AdminArticleController::class);
 Route::resource('adminPatient', AdminPatientController::class);
 Route::resource('patients', PatientController::class);
 Route::resource('doctors', DoctorController::class);
 Route::resource('admindoctors', AdminDoctorController::class);
 Route::resource('adminmedicine', AdminMedicineController::class);
 Route::resource('doctordash', DoctorDashboardController::class);
+
 
 ?>

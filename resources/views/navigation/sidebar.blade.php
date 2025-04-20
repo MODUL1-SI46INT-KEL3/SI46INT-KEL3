@@ -58,7 +58,7 @@
                 <a href="/" class="sidebar-link">Appointment</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Doctor Schedule</a>
+                <a href="{{ route('adminschedules.index') }}" class="sidebar-link">Doctor Schedule</a>
             </li>
             <li>
                 <a href="/" class="sidebar-link">Medical Record</a>

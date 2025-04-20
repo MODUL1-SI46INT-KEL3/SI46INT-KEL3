@@ -74,5 +74,14 @@ Route::resource('admindoctors', AdminDoctorController::class);
 Route::resource('adminmedicine', AdminMedicineController::class);
 Route::resource('doctordash', DoctorDashboardController::class);
 
+// Schedule
+Route::resource('schedules', AdminScheduleController::class)->names([
+    'index' => 'adminschedules.index',
+    'create' => 'adminschedules.create',
+    'store' => 'adminschedules.store',
+    'edit' => 'adminschedules.edit',
+    'update' => 'adminschedules.update',
+    'destroy' => 'adminschedules.destroy',
+]);
 
 ?>

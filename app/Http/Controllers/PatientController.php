@@ -29,7 +29,7 @@ class PatientController extends Controller
             'date_of_birth' => 'required|date',
             'gender' => 'required|string',
             'email' => 'required|email|unique:patient,email',
-            'phone' => 'required|string|max:15',
+            'phone' => 'required|string|max:15|unique:patient,phone',
             'address' => 'required|string',
             'id_card' => 'required|string|unique:patient,id_card',
             'password' => 'required|string|min:8',

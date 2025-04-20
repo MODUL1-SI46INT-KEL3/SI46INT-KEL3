@@ -46,6 +46,34 @@
         margin-bottom: 5px;
     }
 
+    .search-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .search_button, .clearsearch_button {
+        border: 2px solid rgb(26, 26, 26);
+        background-color:rgb(237, 237, 237);
+        border-radius: 10px;
+        padding: 5px 10px;
+        color: black;
+        text-decoration: none;
+    }
+
+    .search_button:hover {
+        background-color: #851216;
+        border: 2px solid white;
+        color: white;
+    }
+
+    .clearsearch_button:hover {
+        background-color:rgb(83, 83, 83);
+        border: 2px solid white;
+        color: white;
+    }
+
     .btn-success { background-color: #28a745; }
     .btn-success:hover { background-color: #218838; }
 
@@ -87,11 +115,33 @@
 <div class="container">
     <div class="header">
         <h1>{{ $nav }}</h1>
-        <p>Default Patient Account Password: <b>defaultPassword123</b> </p>
+        
         <div>
             <a href="{{ route('adminPatient.create') }}" class="btn btn-primary" style="margin-right: 10px;">Add Patient</a>
             <a href="{{ route('adminPatient.patient_export') }}" class="btn btn-secondary">Export PDF</a>
         </div>
+
+        
+
+    </div>
+
+    <div class="search-bar">
+        <p>Default Patient Account Password: <b>defaultPassword123</b> </p>
+        <form action="{{ route('adminPatient.index') }}" method="GET" style="margin-bottom: 20px;">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    name="search" 
+                    placeholder="Search patient..." 
+                    value="{{ request('search') }}" 
+                    style="padding: 8px; width: 300px; border-radius: 10px; border: 1px solid #ccc;"
+                >
+                <button type="submit" class="search_button">Search</button>
+                @if(request('search'))
+                    <a href="{{ route('adminPatient.index') }}" class="clearsearch_button">Clear</a>
+                @endif
+            </div>
+        </form>
     </div>
     <table class="table table-bordered">
         <thead>

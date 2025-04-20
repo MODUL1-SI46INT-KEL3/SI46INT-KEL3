@@ -107,7 +107,7 @@
                         <div class="form_box">
                             <div class="form_input">
 
-                                <label for="password">Password</label>
+                                <label for="password">Password (8 characters minimum)</label>
                                 <input type="password" id="password" name="password" placeholder="Password" required>
                                 @error('password')
                                     <div class="error_message">

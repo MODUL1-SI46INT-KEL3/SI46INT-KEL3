@@ -9,12 +9,19 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminPatientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $patients = Patient::all(); 
+        $patients = Patient::query(); 
         $nav = 'Patients';
+        $search = $request->input('search');
+
+        if ($search) {
+            $patients->where('patient_name', 'like', "%{$search}%");
+        }
+
+        $patients = $patients->get();
         
-        return view('admins.adminPatient.index', compact('patients', 'nav')); 
+        return view('admins.adminPatient.index', compact('patients', 'nav', 'search')); 
     }
 
     public function create()

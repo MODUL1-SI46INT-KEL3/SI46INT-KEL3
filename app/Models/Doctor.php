@@ -20,4 +20,9 @@ class Doctor extends Model implements Authenticatable
     {
         return $this->belongsTo(Specialization::class);
     }
+    
+    public function medicalRecords()
+    {
+        return $this->hasMany(MedicalRecord::class);
+    }
 }

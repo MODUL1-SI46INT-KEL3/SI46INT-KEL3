@@ -26,7 +26,7 @@ class ScheduleController extends Controller
     {
         $validated = $request->validate([
             'doctor_id' => 'required|exists:doctors,id',
-            'patient_id' => 'required|exists:patients,id',
+            'patient_id' => 'required|exists:patients,id_card',
             'date' => 'required|date',
             'time' => 'required',
             'status' => 'required|string'

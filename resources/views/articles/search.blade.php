@@ -76,6 +76,7 @@ section.articles-section {
     margin-bottom: 2rem;
     text-align: center;
 }
+
 .submit {
     background-color:#851216;
     border: 1px white solid;
@@ -84,9 +85,11 @@ section.articles-section {
     width:4vw;
     font-size:0.8vw;
     color:white;
+    transition: background-color 0.3s ease-in;
 }
 .submit:hover{
   background-color:#dc3545;
+  transition: background-color 0.3s ease-in;
 }
 .searchbar{
     background-color:white;
@@ -105,7 +108,7 @@ section.articles-section {
     <div class="container">
         <h2 style="margin-bottom:5px;">Health Articles</h2>
         <h3 style="margin-bottom:5px;">Search for Articles</h3>
-        <form action="{{ route('articles.search') }}" method="GET" class="mb-4" style="margin-top:0px;">
+        <form action="{{ route('articles.search') }}" method="GET" class="mb-4" style="style="margin-top:5px;"">
         <input 
             type="text" 
             name="query" 
@@ -115,19 +118,28 @@ section.articles-section {
         />
         <button type="submit" class="submit">Search</button>
         </form>
-        @foreach($articles as $article)
-            <div class="article-card">
-                <img src="{{ $article->img }}" alt="Article Image">
-                <div class="card-body">
-                    <h5>{{ $article->header }}</h5>
-                    <div class="meta">
-                        by <strong>{{ $article->author ?? 'Unknown' }}</strong> 
-                        on {{ \Carbon\Carbon::parse($article->created_at)->format('F j, Y') }}
+
+        <h3>Search Results</h3>
+
+        @if($results->isEmpty())
+            <p>No articles found.</p>
+        @else
+            <ul>
+                @foreach($results as $article)
+                    <div class="article-card">
+                    <img src="{{ $article->img }}" alt="Article Image">
+                    <div class="card-body">
+                        <h5>{{ $article->header }}</h5>
+                        <div class="meta">
+                            by <strong>{{ $article->author ?? 'Unknown' }}</strong> 
+                            on {{ \Carbon\Carbon::parse($article->created_at)->format('F j, Y') }}
+                        </div>
+                        <p>{{ Str::limit(strip_tags($article->description), 300) }}</p>
                     </div>
-                    <p>{{ Str::limit(strip_tags($article->description), 300) }}</p>
                 </div>
-            </div>
-        @endforeach
+                @endforeach
+            </ul>
+        @endif
     </div>
 @include('navigation.footer')
 </section>

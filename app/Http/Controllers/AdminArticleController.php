@@ -7,7 +7,19 @@ use App\Models\Article;
 
 
 class AdminArticleController extends Controller
+{   
+    public function search(Request $request)
 {
+    $query = $request->input('query');
+
+    $results = Article::where('header', 'like', "%{$query}%")
+        ->orWhere('created_at', 'like', "%{$query}%")
+        ->orWhere('description', 'like', "%{$query}%")
+        ->orWhere('author', 'like', "%{$query}%")
+        ->get();
+
+    return view('articles.search', compact('results', 'query'));
+}
     public function index()
     {
         $articles = article::all(); 

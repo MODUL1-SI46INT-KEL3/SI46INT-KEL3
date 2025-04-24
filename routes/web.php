@@ -7,11 +7,11 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorDashboardController;
 // use App\Http\Controllers\PrescriptionController;
-// use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\AdminDoctorController;
 use App\Http\Controllers\AdminPatientController;
 use App\Http\Controllers\AdminMedicineController;
 use App\Http\Controllers\AdminArticleController;
+use App\Http\Controllers\ScheduleController;
 
 
 use App\Http\Controllers\PdfController;
@@ -51,16 +51,6 @@ Route::get('/doctordash', [DoctorDashboardController::class, 'index'])->name('do
 Route::get('/doctordash/login', [AuthController::class, 'showDoctorLoginForm'])->name('doctordash.login.form');
 Route::post('/doctordash/login', [AuthController::class, 'doctorLogin'])->name('doctordash.login');
 
-// // Medical Records
-// Route::get('/medical-records', [MedicalRecordController::class, 'index'])->name('medical-records.index');
-// Route::get('/medical-records/create', [MedicalRecordController::class, 'create'])->name('medical-records.create');
-// Route::post('/medical-records', [MedicalRecordController::class, 'store'])->name('medical-records.store');
-// Route::get('/medical-records/{patient}', [MedicalRecordController::class, 'show'])->name('medical-records.show');
-// Route::get('/medical-records/{record}/edit', [MedicalRecordController::class, 'edit'])->name('medical-records.edit');
-// Route::put('/medical-records/{record}', [MedicalRecordController::class, 'update'])->name('medical-records.update');
-// Route::delete('/medical-records/{record}', [MedicalRecordController::class, 'destroy'])->name('medical-records.destroy');
-// Route::get('/medical-records/{record}/download', [MedicalRecordController::class, 'downloadFile'])->name('medical-records.download');
-
 // // 
 // Route::get('/', [PrescriptionController::class, 'index'])->name('prescriptions.index');
 // Route::get('/create', [PrescriptionController::class, 'create'])->name('prescriptions.create');
@@ -76,8 +66,10 @@ Route::post('/doctordash/login', [AuthController::class, 'doctorLogin'])->name('
 //Article
 Route::get('/adminarticle', [AdminArticleController::class, 'index'])->name('adminarticle.index');
 Route::get('/adminarticle/create', [AdminArticleController::class, 'create'])->name('adminarticle.create');
+Route::get('/adminarticle/edit', [AdminArticleController::class, 'update'])->name('adminarticle.update');
 Route::post('/adminarticle', [AdminArticleController::class, 'store'])->name('adminarticle.store');
 Route::get('/articles', [AdminArticleController::class, 'generalIndex'])->name('adminarticle.generalIndex');
+Route::get('/articles/search', [AdminArticleController::class, 'search'])->name('articles.search');
 
 
 // Medicine 
@@ -99,7 +91,7 @@ Route::resource('adminmedicine', AdminMedicineController::class);
 Route::resource('doctordash', DoctorDashboardController::class);
 
 // Schedule
-Route::resource('schedules', AdminScheduleController::class)->names([
+Route::resource('schedules', ScheduleController::class)->names([
     'index' => 'adminschedules.index',
     'create' => 'adminschedules.create',
     'store' => 'adminschedules.store',

@@ -9,19 +9,22 @@ use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
+    // Show all schedules
     public function index()
     {
         $schedules = Schedule::with('doctor', 'patient')->get();
-        return view('admins.schedule.index', compact('schedules'));
+        return view('admins.adminSchedule.index', compact('schedules'));
     }
 
+    // Show create form
     public function create()
     {
         $doctors = Doctor::all();
         $patients = Patient::all();
-        return view('admins.schedule.create', compact('doctors', 'patients'));
+        return view('admins.adminSchedule.create', compact('doctors', 'patients'));
     }
 
+    // Store new schedule
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -31,21 +34,25 @@ class ScheduleController extends Controller
             'time' => 'required',
             'status' => 'required|string'
         ]);
+
         Schedule::create($validated);
-        return redirect()->route('schedules.index')->with('success', 'Schedule created successfully.');
+        return redirect()->route('adminschedules.index')->with('success', 'Schedule created successfully.');
     }
 
+    // Show edit form
     public function edit($id)
     {
         $schedule = Schedule::findOrFail($id);
         $doctors = Doctor::all();
         $patients = Patient::all();
-        return view('admins.schedule.edit', compact('schedule', 'doctors', 'patients'));
+        return view('admins.adminSchedule.edit', compact('schedule', 'doctors', 'patients'));
     }
 
+    // Update existing schedule
     public function update(Request $request, $id)
     {
         $schedule = Schedule::findOrFail($id);
+
         $validated = $request->validate([
             'doctor_id' => 'required|exists:doctors,id',
             'patient_id' => 'required|exists:patients,id',
@@ -53,14 +60,16 @@ class ScheduleController extends Controller
             'time' => 'required',
             'status' => 'required|string'
         ]);
+
         $schedule->update($validated);
-        return redirect()->route('schedules.index')->with('success', 'Schedule updated successfully.');
+        return redirect()->route('adminschedules.index')->with('success', 'Schedule updated successfully.');
     }
 
+    // Delete a schedule
     public function destroy($id)
     {
         $schedule = Schedule::findOrFail($id);
         $schedule->delete();
-        return redirect()->route('schedules.index')->with('success', 'Schedule deleted successfully.');
+        return redirect()->route('adminschedules.index')->with('success', 'Schedule deleted successfully.');
     }
 }

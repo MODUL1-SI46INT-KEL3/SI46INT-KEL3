@@ -10,9 +10,12 @@
 </div>
 <div class="form-group">
     <label for="patient_id">Patient</label>
-    <select name="patient_id" class="form-control" required>
+    <select name="patient_id" class="form-control" required style="color: black; background-color: white;">
         @foreach($patients as $patient)
-            <option value="{{ $patient->id }}" {{ isset($schedule) && $schedule->patient_id == $patient->id ? 'selected' : '' }}>
+            <option 
+                value="{{ $patient->id }}" 
+                style="color: black; background-color: white;" 
+                {{ isset($schedule) && $schedule->patient_id == $patient->id ? 'selected' : '' }}>
                 {{ $patient->name }}
             </option>
         @endforeach

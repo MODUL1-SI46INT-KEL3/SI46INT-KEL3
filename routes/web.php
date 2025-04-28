@@ -51,7 +51,7 @@ Route::get('/doctordash', [DoctorDashboardController::class, 'index'])->name('do
 Route::get('/doctordash/login', [AuthController::class, 'showDoctorLoginForm'])->name('doctordash.login.form');
 Route::post('/doctordash/login', [AuthController::class, 'doctorLogin'])->name('doctordash.login');
 
-// // 
+// 
 // Route::get('/', [PrescriptionController::class, 'index'])->name('prescriptions.index');
 // Route::get('/create', [PrescriptionController::class, 'create'])->name('prescriptions.create');
 // Route::post('/', [PrescriptionController::class, 'store'])->name('prescriptions.store');

@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorDashboardController;
-// use App\Http\Controllers\PrescriptionController;
+use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\AdminDoctorController;
 use App\Http\Controllers\AdminPatientController;
 use App\Http\Controllers\AdminMedicineController;
@@ -51,6 +51,7 @@ Route::get('/doctordash', [DoctorDashboardController::class, 'index'])->name('do
 Route::get('/doctordash/login', [AuthController::class, 'showDoctorLoginForm'])->name('doctordash.login.form');
 Route::post('/doctordash/login', [AuthController::class, 'doctorLogin'])->name('doctordash.login');
 
+<<<<<<< HEAD
 // 
 // Route::get('/', [PrescriptionController::class, 'index'])->name('prescriptions.index');
 // Route::get('/create', [PrescriptionController::class, 'create'])->name('prescriptions.create');
@@ -62,6 +63,21 @@ Route::post('/doctordash/login', [AuthController::class, 'doctorLogin'])->name('
 // Route::get('/{prescription}/view', [PrescriptionController::class, 'view'])->name('prescriptions.view');
 // Route::get('/{prescription}/upload', [PrescriptionController::class, 'upload'])->name('prescriptions.upload');
 // Route::post('/{prescription}/upload', [PrescriptionController::class, 'upload'])->name('prescriptions.upload.store');
+=======
+// Prescription Records
+Route::prefix('doctordash')->group(function () {
+    Route::get('/prescriptions', [PrescriptionController::class, 'index'])->name('prescriptions.index');
+    Route::get('/prescriptions/create', [PrescriptionController::class, 'create'])->name('prescriptions.create');
+    Route::post('/prescriptions', [PrescriptionController::class, 'store'])->name('prescriptions.store');
+    Route::get('/prescriptions/{patient}', [PrescriptionController::class, 'show'])->name('prescriptions.show');
+    Route::get('/prescriptions/{prescription}/edit', [PrescriptionController::class, 'edit'])->name('prescriptions.edit');
+    Route::put('/prescriptions/{prescription}', [PrescriptionController::class, 'update'])->name('prescriptions.update');
+    Route::delete('/prescriptions/{prescription}', [PrescriptionController::class, 'destroy'])->name('prescriptions.destroy');
+    Route::get('/prescriptions/{prescription}/view', [PrescriptionController::class, 'view'])->name('prescriptions.view');
+    Route::get('/prescriptions/{prescription}/upload', [PrescriptionController::class, 'upload'])->name('prescriptions.upload');
+    Route::post('/prescriptions/{prescription}/upload', [PrescriptionController::class, 'upload'])->name('prescriptions.upload.store');
+});
+>>>>>>> e96ab164aa20fc87e1c6b4b0100ac869734ccd45
 
 //Article
 Route::get('/adminarticle', [AdminArticleController::class, 'index'])->name('adminarticle.index');

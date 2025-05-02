@@ -24,7 +24,7 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $schedule->doctor->name }}</td>
-                <td>{{ $schedule->patient->name }}</td>
+                <td>{{ $schedule->patient->patient_name }}</td>
                 <td>{{ $schedule->date }}</td>
                 <td>{{ $schedule->time }}</td>
                 <td>{{ $schedule->status }}</td>

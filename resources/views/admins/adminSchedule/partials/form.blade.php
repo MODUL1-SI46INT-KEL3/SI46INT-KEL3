@@ -37,5 +37,16 @@
 </div>
 <div class="form-group">
     <label for="status">Status</label>
-    <input type="text" name="status" class="form-control" value="{{ old('status', $schedule->status ?? '') }}" required>
+    <select name="status" class="form-control" required>
+        @php
+            $statusOptions = ['Done', 'Scheduled', 'Waiting for approval'];
+            $selectedStatus = old('status', $schedule->status ?? '');
+        @endphp
+
+        @foreach($statusOptions as $status)
+            <option value="{{ $status }}" {{ $selectedStatus === $status ? 'selected' : '' }}>
+                {{ $status }}
+            </option>
+        @endforeach
+    </select>
 </div>

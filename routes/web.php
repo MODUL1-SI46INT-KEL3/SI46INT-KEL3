@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminDoctorController;
 use App\Http\Controllers\AdminPatientController;
 use App\Http\Controllers\AdminMedicineController;
 use App\Http\Controllers\AdminArticleController;
+use App\Http\Controllers\ScheduleController;
 
 
 use App\Http\Controllers\PdfController;
@@ -75,7 +76,7 @@ Route::resource('adminmedicine', AdminMedicineController::class);
 Route::resource('doctordash', DoctorDashboardController::class);
 
 // Schedule
-Route::resource('schedules', AdminScheduleController::class)->names([
+Route::resource('schedules', ScheduleController::class)->names([
     'index' => 'adminschedules.index',
     'create' => 'adminschedules.create',
     'store' => 'adminschedules.store',

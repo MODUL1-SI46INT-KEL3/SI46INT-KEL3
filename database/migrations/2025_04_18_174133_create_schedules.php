@@ -13,12 +13,19 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('doctor_id')->constrained('doctor')->onDelete('cascade');
-            $table->foreignId('patient_id')->constrained('patient')->onDelete('cascade');
+
+            // Define the columns first
+            $table->unsignedBigInteger('doctor_id');
+            $table->unsignedBigInteger('patient_id');
+
             $table->date('date');
             $table->time('time');
             $table->string('status'); // e.g., pending, confirmed, completed, cancelled
             $table->timestamps();
+
+            // Add foreign key constraints after the columns exist
+            $table->foreign('doctor_id')->references('id')->on('doctor')->onDelete('cascade');
+            $table->foreign('patient_id')->references('id')->on('patient')->onDelete('cascade');
         });
     }
 

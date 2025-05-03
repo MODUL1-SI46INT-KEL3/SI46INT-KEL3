@@ -23,7 +23,11 @@
         <h1>Create New Article</h1>
         <a href="{{ route('adminarticle.index') }}" class="btn btn-primary">Back to Article List</a>
     </div>
+<<<<<<< HEAD
     <form method="POST" action="{{ route('adminarticle.store') }}" enctype="multipart/form-data">
+=======
+    <form method="POST" action="{{ route('adminarticle.store') }}">
+>>>>>>> origin/main
     @csrf
     <div class="mb-3">
         <label for="header" class="form-label">Header</label>

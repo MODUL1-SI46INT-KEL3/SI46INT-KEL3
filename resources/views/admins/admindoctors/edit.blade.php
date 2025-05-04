@@ -44,6 +44,31 @@
         border-radius: 5px;
         margin-top: 10px;
     }
+
+    .btn-danger {
+    background-color: #dc3545;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    width: 120px;
+    height: 40px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
 </style>
 <h1>Edit Doctor</h1>
 <form action="{{ route('admindoctors.update', $doctor->id) }}" method="POST">
@@ -78,5 +103,6 @@
         <input type="text" name="license_number" class="form-control" value="{{ $doctor->license_number }}" required>
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
+    <a href="{{ route('admindoctors.index') }}" class="btn btn-danger">Cancel</a>
 </form>
 @endsection

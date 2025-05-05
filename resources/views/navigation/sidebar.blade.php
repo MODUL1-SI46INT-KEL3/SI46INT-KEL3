@@ -61,10 +61,10 @@
                 <a href="{{ route('adminschedules.index') }}" class="sidebar-link">Doctor Schedule</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Medical Record</a>
+                <a href="{{ route('adminMedicalRecord.index') }}" class="sidebar-link">Medical Record</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Prescription</a>
+                <a href="{{ route('adminPrescription.index') }}" class="sidebar-link">Prescription</a>
             </li>
             <li>
                 <a href="/" class="sidebar-link">Payment</a>

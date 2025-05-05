@@ -46,10 +46,26 @@ class AdminArticleController extends Controller
             'header' => 'required|string',
             'description' => 'required|string',
             'author' => 'required|string',
-            'img' => 'required|string',
+            'img_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'img_link' => 'nullable|url'
         ]);
+        
+        if ($request->hasFile('img_file')) {
+            // Store uploaded file
+            $imagePath = $request->file('img_file')->store('images', 'public');
+        } elseif ($request->filled('img_link')) {
+            // Use image URL as-is
+            $imagePath = $request->input('img_link');
+        }
 
-        article::create($validateData);
+        article::create(
+            [
+                'header' => $validateData['header'],
+                'description' => $validateData['description'],
+                'author' => $validateData['author'],
+                'img' => $imagePath
+            ]
+        );
         return redirect()->route('adminarticle.index')->with('success', 'article has been added.');
     }
 
@@ -74,10 +90,24 @@ class AdminArticleController extends Controller
             'header' => 'required|string',
             'description' => 'required|string',
             'author' => 'required|string',
-            'img' => 'required|string',
+            'img_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'img_link' => 'nullable|url'
         ]);
 
-        $article->update($validateData);
+        if ($request->hasFile('img_file')) {
+            // Store uploaded file
+            $imagePath = $request->file('img_file')->store('images', 'public');
+        } elseif ($request->filled('img_link')) {
+            // Use image URL as-is
+            $imagePath = $request->input('img_link');
+        }
+
+        $article->update([
+            'header' => $validateData['header'],
+            'description' => $validateData['description'],
+            'author' => $validateData['author'],
+            'img' => $imagePath
+        ]);
         return redirect()->route('adminarticle.index')->with('success', 'article updated successfully.');
     }
 

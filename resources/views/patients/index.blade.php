@@ -51,6 +51,7 @@
                             <li class="main_nav"><a href="{{ url('doctors') }}">Doctors</a></li>
                             <li class="main_nav"><a href="{{ url('symptoms') }}">Check Symptoms</a></li>
                             <li class="main_nav"><a href="{{ url('medicines') }}">Medicine</a></li> 
+                            <li class="main_nav"><a href="{{ route('patients.prescriptions') }}">My Prescriptions</a></li>
                             <li class="gradient">
                                 <a href="{{ url('appointments') }}"><button> Book Appointment > </button></a>
                             </li>

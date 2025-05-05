@@ -19,5 +19,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Run the specialization seeder first (since doctors depend on specializations)
+        $this->call(SpecializationSeeder::class);
+        
+        // Then run the doctor seeder
+        $this->call(DoctorSeeder::class);
     }
 }

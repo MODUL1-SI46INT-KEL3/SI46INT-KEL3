@@ -39,12 +39,12 @@
         
         <div class="form-group mb-3">
             <label for="price">Price</label>
-            <input type="number" name="price" id="price" class="form-control" value="{{ $medicine->price }}" required>
+            <input type="text" name="price" id="price" class="form-control" value="{{ $medicine->price }}" required>
         </div>
         
         <div class="form-group mb-3">
             <label for="stock">Stock</label>
-            <input type="number" name="stock" id="stock" class="form-control" value="{{ $medicine->stock }}" required>
+            <input type="text" name="stock" id="stock" class="form-control" value="{{ $medicine->stock }}" required>
         </div>
         
         <button type="submit" class="btn btn-success">Update Medicine</button>

@@ -28,8 +28,8 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'doctor_id' => 'required|exists:doctors,id',
-            'patient_id' => 'required|exists:patients,id',
+            'doctor_id' => 'required|exists:doctor,id',
+            'patient_id' => 'required|exists:patient,id',
             'date' => 'required|date',
             'time' => 'required',
             'status' => 'required|string'
@@ -54,8 +54,8 @@ class ScheduleController extends Controller
         $schedule = Schedule::findOrFail($id);
 
         $validated = $request->validate([
-            'doctor_id' => 'required|exists:doctors,id',
-            'patient_id' => 'required|exists:patients,id',
+            'doctor_id' => 'required|exists:doctor,id',
+            'patient_id' => 'required|exists:patient,id',
             'date' => 'required|date',
             'time' => 'required',
             'status' => 'required|string'

@@ -1,3 +1,12 @@
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="form-group">
     <label for="doctor_id">Doctor</label>
     <select name="doctor_id" class="form-control" required>
@@ -10,13 +19,10 @@
 </div>
 <div class="form-group">
     <label for="patient_id">Patient</label>
-    <select name="patient_id" class="form-control" required style="color: black; background-color: white;">
+    <select name="patient_id" class="form-control" required>
         @foreach($patients as $patient)
-            <option 
-                value="{{ $patient->id }}" 
-                style="color: black; background-color: white;" 
-                {{ isset($schedule) && $schedule->patient_id == $patient->id ? 'selected' : '' }}>
-                {{ $patient->name }}
+            <option value="{{ $patient->id }}" {{ isset($schedule) && $schedule->patient_id == $patient->id ? 'selected' : '' }}>
+                {{ $patient->patient_name }}
             </option>
         @endforeach
     </select>
@@ -31,5 +37,16 @@
 </div>
 <div class="form-group">
     <label for="status">Status</label>
-    <input type="text" name="status" class="form-control" value="{{ old('status', $schedule->status ?? '') }}" required>
+    <select name="status" class="form-control" required>
+        @php
+            $statusOptions = ['Done', 'Scheduled', 'Waiting for approval'];
+            $selectedStatus = old('status', $schedule->status ?? '');
+        @endphp
+
+        @foreach($statusOptions as $status)
+            <option value="{{ $status }}" {{ $selectedStatus === $status ? 'selected' : '' }}>
+                {{ $status }}
+            </option>
+        @endforeach
+    </select>
 </div>

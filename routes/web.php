@@ -52,6 +52,7 @@ Route::get('/patients/prescriptions/{prescription}/download', [PrescriptionContr
 Route::get('/admindoctors', [MedicineController::class, 'index'])->name('admindoctors.index');
 Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
 Route::get('/admindoctors/export', [PdfController::class, 'doctor_exportPdf'])->name('admindoctors.doctor_export');
+Route::get('/admindoctors', [AdminDoctorController::class, 'index'])->name('admindoctors.index');
 
 // Doctor Dashboard
 Route::get('/doctordash/home', [DoctorDashboardController::class, 'home'])->name('doctordash.home');

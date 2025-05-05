@@ -7,10 +7,21 @@ use Illuminate\Http\Request;
 
 class AdminDoctorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $doctors = Doctor::all();
-        return view('admins.admindoctors.index', compact('doctors'));
+        $keyword = $request->input('search');
+
+        if ($keyword) {
+            $doctors = Doctor::where('name', 'LIKE', "%$keyword%")
+                ->orWhere('email', 'LIKE', "%$keyword%")
+                ->orWhere('license_number', 'LIKE', "%$keyword%")
+                ->orWhere('phone', 'LIKE', "%$keyword%")
+                ->get();
+        } else {
+            $doctors = Doctor::all();
+        }
+
+        return view('admins.admindoctors.index', compact('doctors', 'keyword'));
     }
 
     public function create()

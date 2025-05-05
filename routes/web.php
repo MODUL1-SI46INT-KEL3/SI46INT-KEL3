@@ -6,12 +6,15 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorDashboardController;
+use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\AdminDoctorController;
 use App\Http\Controllers\AdminPatientController;
 use App\Http\Controllers\AdminMedicineController;
 use App\Http\Controllers\AdminArticleController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\AdminMedicalRecordController;
+use App\Http\Controllers\AdminPrescriptionController;
 
 
 use App\Http\Controllers\PdfController;
@@ -40,6 +43,11 @@ Route::get('/patients/edit', [PatientController::class, 'edit'])->name('patients
 Route::patch('/patients/update', [PatientController::class, 'update'])->name('patients.update');
 Route::delete('/patients/destroy/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');
 
+// Patient Prescriptions
+Route::get('/patients/prescriptions', [PrescriptionController::class, 'patientPrescriptions'])->name('patients.prescriptions')->middleware('auth');
+Route::get('/patients/prescriptions/{prescription}/view', [PrescriptionController::class, 'patientPrescriptionView'])->name('patients.prescriptions.view')->middleware('auth');
+Route::get('/patients/prescriptions/{prescription}/download', [PrescriptionController::class, 'patientPrescriptionDownload'])->name('patients.prescriptions.download')->middleware('auth');
+
 // Doctor 
 Route::get('/admindoctors', [MedicineController::class, 'index'])->name('admindoctors.index');
 Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
@@ -51,6 +59,18 @@ Route::get('/doctordash/home', [DoctorDashboardController::class, 'home'])->name
 Route::get('/doctordash', [DoctorDashboardController::class, 'index'])->name('doctordash.index');
 Route::get('/doctordash/login', [AuthController::class, 'showDoctorLoginForm'])->name('doctordash.login.form');
 Route::post('/doctordash/login', [AuthController::class, 'doctorLogin'])->name('doctordash.login');
+
+// Medical Records
+Route::prefix('doctordash')->group(function () {
+    Route::get('/medical-records', [MedicalRecordController::class, 'index'])->name('medical-records.index');
+    Route::get('/medical-records/create', [MedicalRecordController::class, 'create'])->name('medical-records.create');
+    Route::post('/medical-records', [MedicalRecordController::class, 'store'])->name('medical-records.store');
+    Route::get('/medical-records/{patient}', [MedicalRecordController::class, 'show'])->name('medical-records.show');
+    Route::get('/medical-records/{record}/edit', [MedicalRecordController::class, 'edit'])->name('medical-records.edit');
+    Route::put('/medical-records/{record}', [MedicalRecordController::class, 'update'])->name('medical-records.update');
+    Route::delete('/medical-records/{record}', [MedicalRecordController::class, 'destroy'])->name('medical-records.destroy');
+    Route::get('/medical-records/{record}/download', [MedicalRecordController::class, 'downloadFile'])->name('medical-records.download');
+});
 
 // Prescription Records
 Route::prefix('doctordash')->group(function () {
@@ -82,6 +102,22 @@ Route::get('/adminmedicine', [MedicineController::class, 'index'])->name('adminm
 Route::get('/adminPatient/export', [PdfController::class, 'patient_exportPdf'])->name('adminPatient.patient_export');
 Route::get('/admindoctors/export', [PdfController::class, 'doctor_exportPdf'])->name('admindoctors.doctor_export');
 Route::get('/adminmedicine/export', [PdfController::class, 'medicine_exportPdf'])->name('adminmedicine.medicine_export');
+Route::get('/adminMedicalRecord/export', [PdfController::class, 'medicalRecord_exportPdf'])->name('adminMedicalRecord.export');
+Route::get('/adminPrescription/export', [PdfController::class, 'prescription_exportPdf'])->name('adminPrescription.export');
+
+// Admin Medical Records
+Route::get('/adminMedicalRecord', [AdminMedicalRecordController::class, 'index'])->name('adminMedicalRecord.index');
+Route::get('/adminMedicalRecord/{patient}', [AdminMedicalRecordController::class, 'show'])->name('adminMedicalRecord.show');
+Route::get('/adminMedicalRecord/{record}/view', [AdminMedicalRecordController::class, 'view'])->name('adminMedicalRecord.view');
+Route::get('/adminMedicalRecord/{record}/download', [AdminMedicalRecordController::class, 'downloadFile'])->name('adminMedicalRecord.download');
+Route::get('/adminMedicalRecord/{record}/print', [AdminMedicalRecordController::class, 'printReport'])->name('adminMedicalRecord.print');
+
+// Admin Prescriptions
+Route::get('/adminPrescription', [AdminPrescriptionController::class, 'index'])->name('adminPrescription.index');
+Route::get('/adminPrescription/{patient}', [AdminPrescriptionController::class, 'show'])->name('adminPrescription.show');
+Route::get('/adminPrescription/{prescription}/view', [AdminPrescriptionController::class, 'view'])->name('adminPrescription.view');
+Route::get('/adminPrescription/{prescription}/download', [AdminPrescriptionController::class, 'downloadFile'])->name('adminPrescription.download');
+Route::get('/adminPrescription/{prescription}/print', [AdminPrescriptionController::class, 'printReport'])->name('adminPrescription.print');
 
 // Resource Routes
 Route::resource('admins', AdminController::class);

@@ -45,6 +45,8 @@
             <li>
                 <a href="#" class="sidebar-link">---</a>
             </li>
+            <li><a href="{{ route('medical-records.index') }}" class="sidebar-link">Medical Records</a></li>
+            <li><a href="{{ route('prescriptions.index') }}" class="sidebar-link">Prescription</a></li>
         </ul>
         <a href="{{ route('views.landing') }}" class="logout">
             <button>Logout</button>

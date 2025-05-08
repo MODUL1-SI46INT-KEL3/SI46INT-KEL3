@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('schedules', function (Blueprint $table) {
-            $table->id();
+            $table->id('schedule_id');
             $table->foreignId('doctor_id')->constrained('doctor')->onDelete('cascade');
-            $table->foreignId('patient_id')->constrained('patient')->onDelete('cascade');
-            $table->date('date');
-            $table->time('time');
-            $table->string('status'); // e.g., pending, confirmed, completed, cancelled
+            $table->date('available_date');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }

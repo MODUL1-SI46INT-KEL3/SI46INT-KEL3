@@ -101,5 +101,6 @@ Route::resource('schedules', ScheduleController::class)->names([
     'update' => 'adminschedules.update',
     'destroy' => 'adminschedules.destroy',
 ]);
+Route::get('schedules/export/pdf', [ScheduleController::class, 'export'])->name('adminschedules.export');
 
 ?>

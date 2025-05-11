@@ -4,72 +4,73 @@ namespace App\Http\Controllers;
 
 use App\Models\Schedule;
 use App\Models\Doctor;
-use App\Models\Patient;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ScheduleController extends Controller
 {
-    // Show all schedules
     public function index()
     {
-        $schedules = Schedule::with('doctor', 'patient')->get();
+        $schedules = Schedule::with('doctor')->get();
         return view('admins.adminSchedule.index', compact('schedules'));
     }
 
-    // Show create form
     public function create()
     {
         $doctors = Doctor::all();
-        $patients = Patient::all();
-        return view('admins.adminSchedule.create', compact('doctors', 'patients'));
+        return view('admins.adminSchedule.create', compact('doctors'));
     }
 
-    // Store new schedule
     public function store(Request $request)
     {
         $validated = $request->validate([
             'doctor_id' => 'required|exists:doctor,id',
-            'patient_id' => 'required|exists:patient,id',
-            'date' => 'required|date',
-            'time' => 'required',
-            'status' => 'required|string'
+            'available_date' => 'required|date',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
+            'is_available' => 'required|boolean'
         ]);
 
         Schedule::create($validated);
-        return redirect()->route('adminschedules.index')->with('success', 'Schedule created successfully.');
+        return redirect()->route('adminschedules.index')->with('success', 'Schedule created.');
     }
 
-    // Show edit form
     public function edit($id)
     {
         $schedule = Schedule::findOrFail($id);
         $doctors = Doctor::all();
-        $patients = Patient::all();
-        return view('admins.adminSchedule.edit', compact('schedule', 'doctors', 'patients'));
+        return view('admins.adminSchedule.edit', compact('schedule', 'doctors'));
     }
 
-    // Update existing schedule
     public function update(Request $request, $id)
     {
         $schedule = Schedule::findOrFail($id);
 
         $validated = $request->validate([
             'doctor_id' => 'required|exists:doctor,id',
-            'patient_id' => 'required|exists:patient,id',
-            'date' => 'required|date',
-            'time' => 'required',
-            'status' => 'required|string'
+            'available_date' => 'required|date',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
+            'is_available' => 'required|boolean'
         ]);
 
         $schedule->update($validated);
-        return redirect()->route('adminschedules.index')->with('success', 'Schedule updated successfully.');
+        return redirect()->route('adminschedules.index')->with('success', 'Schedule updated.');
     }
 
-    // Delete a schedule
     public function destroy($id)
     {
-        $schedule = Schedule::findOrFail($id);
-        $schedule->delete();
-        return redirect()->route('adminschedules.index')->with('success', 'Schedule deleted successfully.');
+        Schedule::findOrFail($id)->delete();
+        return redirect()->route('adminschedules.index')->with('success', 'Schedule deleted.');
+    }
+    
+    public function export()
+    {
+        $schedules = Schedule::with('doctor', 'patient')->get();
+        $pdf = Pdf::loadView('admins.adminSchedule.pdf', compact('schedules'));
+        return $pdf->download('schedules.pdf');
     }
 }
+ 
+
+

@@ -89,13 +89,6 @@
             @enderror
         </div>
         <div class="form-group">
-            <label for="working_hours">Working Hours</label>
-            <input type="text" name="working_hours" class="form-control" value="{{ old('working_hours') }}" required>
-            @error('working_hours')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="form-group">
             <label for="password">Password</label>
             <input type="password" name="password" class="form-control" required>
             @error('password')

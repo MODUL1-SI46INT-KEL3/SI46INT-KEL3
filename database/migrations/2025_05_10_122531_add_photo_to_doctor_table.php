@@ -20,9 +20,9 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-    {
-        Schema::table('doctor', function (Blueprint $table) {
-            $table->string('photo')->nullable()->after('license_number');
-        });
-    }
+{
+    Schema::table('doctor', function (Blueprint $table) {
+        $table->dropColumn('photo');
+    });
+}
 };

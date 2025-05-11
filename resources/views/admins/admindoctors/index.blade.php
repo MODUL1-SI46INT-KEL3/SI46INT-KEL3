@@ -89,6 +89,15 @@
         border: 2px solid white;
         color: white;
     }
+
+    /* Photo image styling */
+    .doctor-photo {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -144,6 +153,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Photo</th> <!-- New Photo Column -->
                 <th>Name</th>
                 <th>Email</th>
                 <th>Working Hours</th>
@@ -157,6 +167,13 @@
             @forelse ($doctors as $index => $doctor)
                 <tr>
                     <td>{{ $index + 1 }}</td>
+                    <td>
+                        @if($doctor->photo)
+                            <img src="{{ asset($doctor->photo) }}" alt="Doctor Photo" class="doctor-photo">
+                        @else
+                            <img src="{{ asset('icons/doctor icon.png') }}" alt="No Photo" class="doctor-photo">
+                        @endif
+                    </td>
                     <td>{{ $doctor->name }}</td>
                     <td>{{ $doctor->email }}</td>
                     <td>{{ $doctor->working_hours }}</td>
@@ -174,7 +191,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="8" class="text-center">No Doctors found.</td>
+                    <td colspan="9" class="text-center">No Doctors found.</td>
                 </tr>
             @endforelse
         </tbody>

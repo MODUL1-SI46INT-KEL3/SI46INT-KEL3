@@ -13,7 +13,7 @@ class Doctor extends Model implements Authenticatable
     protected $table = 'doctor'; 
 
     protected $fillable = [
-        'name', 'email', 'working_hours', 'password', 'specialization_id', 'phone', 'license_number'
+         'name', 'email', 'working_hours', 'password', 'specialization_id', 'phone', 'license_number', 'photo'
     ];
 
     public function specialization()

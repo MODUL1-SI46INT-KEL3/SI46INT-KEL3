@@ -15,6 +15,8 @@ use App\Http\Controllers\AdminArticleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AdminMedicalRecordController;
 use App\Http\Controllers\AdminPrescriptionController;
+use App\Http\Controllers\ReviewController;
+
 
 
 use App\Http\Controllers\PdfController;
@@ -128,6 +130,16 @@ Route::resource('doctors', DoctorController::class);
 Route::resource('admindoctors', AdminDoctorController::class);
 Route::resource('adminmedicine', AdminMedicineController::class);
 Route::resource('doctordash', DoctorDashboardController::class);
+
+
+// Feedback n Review
+Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+// Optional category-specific routes if you want dropdown redirection working:
+Route::get('/reviews/website', [ReviewController::class, 'index'])->name('reviews.website');
+Route::get('/reviews/appointment', [ReviewController::class, 'index'])->name('reviews.appointment');
+Route::get('/reviews/shop', [ReviewController::class, 'index'])->name('reviews.shop');
 
 // Schedule
 Route::resource('schedules', ScheduleController::class)->names([

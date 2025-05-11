@@ -88,10 +88,13 @@
     }
 
     .card-img {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
+      height: 185px;          
+      width: 120px;          
+      object-fit: cover;     
       margin-right: 20px;
+      border-radius: 10px;
+      border: 1px solid #eee;
+      background: #fff;
     }
 
     .card-body {
@@ -211,7 +214,9 @@
         @foreach($doctors as $doctor)
           <div class="col-md-6 mb-4">
             <div class="card">
-              <img class="card-img" src="{{ asset('icons/doctor icon.png') }}" alt="Telkomedika">
+              <img class="card-img" 
+                   src="{{ $doctor->photo ? asset($doctor->photo) : asset('icons/doctor icon.png') }}" 
+                   alt="{{ $doctor->name }}">
               <div class="card-body">
                 <h5 class="card-title">{{ $doctor->name }}</h5>
                 <p class="card-text">Specialty: {{ $doctor->specialization->name }}</p>

@@ -16,6 +16,9 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AdminMedicalRecordController;
 use App\Http\Controllers\AdminPrescriptionController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AdminSymptomController;
+use App\Http\Controllers\SymptomController;
+use App\Http\Controllers\MedicineController;
 
 
 
@@ -99,6 +102,12 @@ Route::get('/articles/search', [AdminArticleController::class, 'search'])->name(
 
 // Medicine 
 Route::get('/adminmedicine', [MedicineController::class, 'index'])->name('adminmedicine.index');
+Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines.index');
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+
+// Symptoms
+Route::get('/symptoms', [SymptomController::class, 'index'])->name('symptoms.index');
+Route::post('/symptoms/recommend', [SymptomController::class, 'recommend'])->name('symptoms.recommend');
 
 // Export
 Route::get('/adminPatient/export', [PdfController::class, 'patient_exportPdf'])->name('adminPatient.patient_export');
@@ -106,6 +115,7 @@ Route::get('/admindoctors/export', [PdfController::class, 'doctor_exportPdf'])->
 Route::get('/adminmedicine/export', [PdfController::class, 'medicine_exportPdf'])->name('adminmedicine.medicine_export');
 Route::get('/adminMedicalRecord/export', [PdfController::class, 'medicalRecord_exportPdf'])->name('adminMedicalRecord.export');
 Route::get('/adminPrescription/export', [PdfController::class, 'prescription_exportPdf'])->name('adminPrescription.export');
+Route::get('/adminsymptoms/export', [PdfController::class, 'symptom_exportPdf'])->name('adminsymptoms.symptom_export');
 
 // Admin Medical Records
 Route::get('/adminMedicalRecord', [AdminMedicalRecordController::class, 'index'])->name('adminMedicalRecord.index');
@@ -130,6 +140,9 @@ Route::resource('doctors', DoctorController::class);
 Route::resource('admindoctors', AdminDoctorController::class);
 Route::resource('adminmedicine', AdminMedicineController::class);
 Route::resource('doctordash', DoctorDashboardController::class);
+Route::resource('adminsymptoms', AdminSymptomController::class);
+Route::resource('symptoms', SymptomController::class);
+Route::resource('medicines', MedicineController::class);
 
 
 // Feedback n Review

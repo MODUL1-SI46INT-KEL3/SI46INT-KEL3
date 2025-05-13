@@ -1,4 +1,5 @@
 @extends('admins.index')
+
 @section('content')
 <style>
     .container {
@@ -45,13 +46,17 @@
         margin-bottom: 5px;
         margin-top: 5px;
     }
+
     .btn-success { background-color: #28a745; }
     .btn-success:hover { background-color: #218838; }
+
     .btn-warning { background-color: #ff9900; }
     .btn-warning:hover { background-color: #e68a00; }
+
     .btn-danger { background-color: #dc3545; }
     .btn-danger:hover { background-color: #c82333; }
 </style>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function confirmDelete(event) {
@@ -72,44 +77,37 @@
         });
     }
 </script>
+
 <div class="container">
     <div class="header">
-        <h1>Medicines</h1>
+        <h1>Symptoms</h1>
         <div class="buttons">
-            <a href="{{ route('adminmedicine.create') }}" class="btn btn-primary">Add Medicine</a>
-            <a href="{{ route('adminmedicine.medicine_export') }}" class="btn btn-secondary" style="margin-left: 10px;">Export PDF</a>
+            <a href="{{ route('adminsymptoms.create') }}" class="btn btn-primary">Add Symptom</a>
+            <a href="{{ route('adminsymptoms.symptom_export') }}" class="btn btn-secondary" style="margin-left: 10px;">Export PDF</a>
         </div>
     </div>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>No.</th>
-                <th>Image</th>
                 <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Stock</th>
+                <th>Specializations</th> 
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($medicines as $medicine)
+            @foreach($symptoms as $symptom)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
+                    <td>{{ $symptom->name }}</td>
                     <td>
-                        @if($medicine->image)
-                            <img src="{{ asset($medicine->image) }}" alt="Medicine Image" style="max-width: 60px; max-height: 60px;">
-                        @else
-                            <span>No Image</span>
-                        @endif
+                        @foreach($symptom->specializations as $specialization)
+                            {{ $specialization->name }}<br>
+                        @endforeach
                     </td>
-                    <td>{{ $medicine->medicine_name }}</td>
-                    <td>{{ $medicine->description }}</td>
-                    <td>Rp {{ number_format($medicine->price, 0, ',', '.') }}</td>
-                    <td>{{ $medicine->stock }}</td>
                     <td>
-                        <a href="{{ route('adminmedicine.edit', $medicine->id) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('adminmedicine.destroy', $medicine->id) }}" method="POST" style="display:inline;">
+                        <a href="{{ route('adminsymptoms.edit', $symptom->id) }}" class="btn btn-warning">Edit</a>
+                        <form action="{{ route('adminsymptoms.destroy', $symptom->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger" onclick="confirmDelete(event)">Delete</button>

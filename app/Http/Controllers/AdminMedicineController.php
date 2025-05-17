@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\Medicine;
 use Illuminate\Http\Request;
 use PDF;
@@ -8,15 +10,15 @@ class AdminMedicineController extends Controller
 {
     public function index()
     {
-        $medicines = Medicine::all(); 
+        $medicines = Medicine::all();
         $nav = 'Medicines';
-        return view('admins.adminmedicine.index', compact('medicines', 'nav')); 
+        return view('admins.adminmedicine.index', compact('medicines', 'nav'));
     }
 
-    public function create() 
+    public function create()
     {
         $nav = 'Add Medicine';
-        return view('admins.adminmedicine.create', compact('nav')); 
+        return view('admins.adminmedicine.create', compact('nav'));
     }
 
     public function store(Request $request)
@@ -26,7 +28,14 @@ class AdminMedicineController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . uniqid() . '.' . $request->image->extension();
+            $request->image->move(public_path('images/medicines'), $imageName);
+            $validateData['image'] = 'images/medicines/' . $imageName;
+        }
 
         Medicine::create($validateData);
         return redirect()->route('adminmedicine.index')->with('success', 'Medicine has been added.');
@@ -54,7 +63,18 @@ class AdminMedicineController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($medicine->image && file_exists(public_path($medicine->image))) {
+                unlink(public_path($medicine->image));
+            }
+            $imageName = time() . '_' . uniqid() . '.' . $request->image->extension();
+            $request->image->move(public_path('images/medicines'), $imageName);
+            $validateData['image'] = 'images/medicines/' . $imageName;
+        }
 
         $medicine->update($validateData);
         return redirect()->route('adminmedicine.index')->with('success', 'Medicine updated successfully.');
@@ -63,10 +83,14 @@ class AdminMedicineController extends Controller
     public function destroy(string $id)
     {
         $medicine = Medicine::findOrFail($id);
+        // Delete image file if exists
+        if ($medicine->image && file_exists(public_path($medicine->image))) {
+            unlink(public_path($medicine->image));
+        }
         $medicine->delete();
         return redirect()->route('adminmedicine.index')->with('success', 'Medicine has been deleted.');
     }
-    
+
     public function medicine_export()
     {
         $medicines = Medicine::all();

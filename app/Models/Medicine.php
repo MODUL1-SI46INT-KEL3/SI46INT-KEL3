@@ -13,5 +13,6 @@ class Medicine extends Model
         'description',
         'price',
         'stock',
+        'image',
     ];
 }

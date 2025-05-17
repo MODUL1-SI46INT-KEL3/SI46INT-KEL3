@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('working_hours'); 
+            $table->string('working_hours');
             $table->string('password');
             $table->foreignId('specialization_id')
                 ->constrained('specializations')

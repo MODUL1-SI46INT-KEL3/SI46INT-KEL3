@@ -61,15 +61,12 @@
                             </div>
                         </div>
 
-                        <div class="quantity-controls" id="quantity-controls-{{ $loop->index }}" style="display: none;">
-                            <button type="button" onclick="updateQuantity(-1, {{ $loop->index }})">-</button>
-                            <span id="quantity-{{ $loop->index }}">1</span>
-                            <button type="button" onclick="updateQuantity(1, {{ $loop->index }})">+</button>
-                            <span style="margin-left: 10px; cursor: pointer;" onclick="cancelQuantityControls({{ $loop->index }})">Cancel</span>
-                            <span id="total-price-{{ $loop->index }}" style="margin-left: 10px;">Total: Rp{{ number_format($medicine->price, 2, ',', '.') }}</span>
-                        </div>
-
-                        <button class="add-to-cart-button" onclick="addToCart({{ $loop->index }}, '{{ $medicine->medicine_name }}', {{ $medicine->price }}, {{ $medicine->stock }})">
+                        {{-- Add to Cart button disabled and no action --}}
+                        <button 
+                            class="add-to-cart-button" 
+                            onclick="event.preventDefault();" 
+                            title="Add to Cart feature coming soon"
+                        >
                             Add to Cart
                         </button>
                     </div>
@@ -77,18 +74,6 @@
             </div>
         @endforeach
     @endif
-</div>
-
-<div id="cart-popup">
-    <h3>Your Cart</h3>
-    <div id="cart-items"></div>
-    <p id="cart-total">Total: Rp0</p>
-
-    <button onclick="clearCart()">Clear Cart</button>
-    <button onclick="closeCartPopup()">Close</button>
-    <div class="order-buttons">
-        <button onclick="placeOrder()">Place Order</button>
-    </div>
 </div>
 
 <footer>
@@ -124,97 +109,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
-<script>
-let cart = {};
-
-function addToCart(index, medicineName, price, stock) {
-    const quantity = parseInt(document.getElementById(`quantity-${index}`).innerText);
-
-    if (cart[medicineName]) {
-        if (cart[medicineName].quantity + quantity > stock) {
-            alert(`You cannot add more than the available stock (${stock}) of ${medicineName}.`);
-            return;
-        }
-        cart[medicineName].quantity += quantity;
-    } else {
-        if (quantity > stock) {
-            alert(`You cannot add more than the available stock (${stock}) of ${medicineName}.`);
-            return;
-        }
-        cart[medicineName] = { quantity, price, stock };
-    }
-
-    updateCartPopup();
-    showCartPopup();
-}
-
-function updateCartPopup() {
-    const cartItemsContainer = document.getElementById('cart-items');
-    const cartTotalElement = document.getElementById('cart-total');
-
-    cartItemsContainer.innerHTML = '';
-    let total = 0;
-
-    for (const [medicineName, details] of Object.entries(cart)) {
-        const itemTotal = details.quantity * details.price;
-        total += itemTotal;
-
-        const itemElement = document.createElement('div');
-        itemElement.className = 'cart-item';
-        itemElement.innerHTML = `
-            <p>${medicineName}</p>
-            <div>
-                <button onclick="updateCartItem('${medicineName}', -1, ${details.stock})">-</button>
-                <span>${details.quantity}</span>
-                <button onclick="updateCartItem('${medicineName}', 1, ${details.stock})">+</button>
-                <span>Rp${itemTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-            </div>
-        `;
-        cartItemsContainer.appendChild(itemElement);
-    }
-
-    cartTotalElement.innerText = `Total: Rp${total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-}
-
-function updateCartItem(medicineName, change, stock) {
-    if (cart[medicineName]) {
-        if (change === 1 && cart[medicineName].quantity + 1 > stock) {
-            alert(`You cannot add more than the available stock (${stock}) of ${medicineName}.`);
-            return;
-        }
-
-        cart[medicineName].quantity += change;
-
-        if (cart[medicineName].quantity <= 0) {
-            delete cart[medicineName];
-        }
-    }
-
-    updateCartPopup();
-}
-
-function clearCart() {
-    cart = {};
-    updateCartPopup();
-}
-
-function showCartPopup() {
-    const cartPopup = document.getElementById('cart-popup');
-    if (cartPopup) {
-        cartPopup.style.display = 'block';
-    } else {
-        console.error("Cart popup element not found.");
-    }
-}
-
-function closeCartPopup() {
-    document.getElementById('cart-popup').style.display = 'none';
-}
-
-function placeOrder() {
-    alert("Your purchase has been made!");
-    closeCartPopup();
-}
-</script>
 </body>
 </html>

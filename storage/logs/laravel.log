@@ -3522,3 +3522,7 @@ Did you mean one of these?
 #47 D:\\TUBES PPL\\SI46INT-KEL3\\artisan(16): Illuminate\\Foundation\\Application->handleCommand()
 #48 {main}
 "} 
+[2025-05-12 06:00:39] local.ERROR: Maximum execution time of 30 seconds exceeded {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Maximum execution time of 30 seconds exceeded at D:\\TUBES PPL\\SI46INT-KEL3\\vendor\\doctrine\\inflector\\lib\\Doctrine\\Inflector\\RulesetInflector.php:20)
+[stacktrace]
+#0 {main}
+"} 

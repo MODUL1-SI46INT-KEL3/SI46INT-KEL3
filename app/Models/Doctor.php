@@ -48,4 +48,17 @@ class Doctor extends Model implements Authenticatable
 
         return $timeRanges->implode(', ');
     }
+
+    public function getDoctorsBySpecialization($id)
+    {
+        try {
+            $doctors = Doctor::where('specialization_id', $id)->get(['id', 'name']);
+            return response()->json($doctors);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Server error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
+
 }

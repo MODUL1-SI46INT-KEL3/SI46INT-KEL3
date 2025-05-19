@@ -59,7 +59,7 @@
                             <li class="main_nav"><a href="<?php echo e(url('medicines')); ?>">Medicine</a></li> 
                             <li class="main_nav"><a href="<?php echo e(url('symptoms')); ?>">Check Symptoms</a></li>
                             <li class="main_nav"><a href="<?php echo e(url('articles')); ?>">Article</a></li>
-                            <li class="main_nav"><a href="/">Review Us</a></li>
+                            <li class="main_nav"><a href="/reviews">Review Us</a></li>
                             <li class="gradient">
                                 <a href="<?php echo e(url('appointments')); ?>"><button> Book Appointment > </button></a>
                             </li>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorDashboardController;
 use App\Http\Controllers\MedicalRecordController;
@@ -64,6 +65,20 @@ Route::get('/doctordash/home', [DoctorDashboardController::class, 'home'])->name
 Route::get('/doctordash', [DoctorDashboardController::class, 'index'])->name('doctordash.index');
 Route::get('/doctordash/login', [AuthController::class, 'showDoctorLoginForm'])->name('doctordash.login.form');
 Route::post('/doctordash/login', [AuthController::class, 'doctorLogin'])->name('doctordash.login');
+
+//Appointments
+Route::get('/appointments/step1', [AppointmentController::class, 'createStep1'])->name('appointments.step1_specialist');
+Route::post('/appointments/step1', [AppointmentController::class, 'postStep1']);
+
+Route::get('/appointments/step2', [AppointmentController::class, 'createStep2'])->name('appointments.step2_time');
+Route::post('/appointments/step2', [AppointmentController::class, 'postStep2']);
+
+Route::get('/appointments/step3', [AppointmentController::class, 'createStep3'])->name('appointments.step3_overview');
+Route::post('/appointments/step3', [AppointmentController::class, 'postStep3']); 
+
+Route::get('/appointments/step4', [AppointmentController::class, 'createStep4'])->name('appointments.step4_confirmation');
+
+Route::get('/specializations/{id}/doctors', [DoctorController::class, 'getDoctorsBySpecialization']);
 
 // Medical Records
 Route::prefix('doctordash')->group(function () {
@@ -164,5 +179,10 @@ Route::resource('schedules', ScheduleController::class)->names([
     'destroy' => 'adminschedules.destroy',
 ]);
 Route::get('schedules/export/pdf', [ScheduleController::class, 'export'])->name('adminschedules.export');
+
+
+
+Route::get('/specializations/{id}/doctors', [AppointmentController::class, 'getDoctorsBySpecialization']);
+
 
 ?>

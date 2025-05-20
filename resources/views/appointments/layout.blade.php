@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/appointments.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/appointment.css') }}">
 </head>
 <body>
 
@@ -38,19 +38,19 @@
                     <div class="progress_line">
                         <span class="dot dot-1"></span>
                         <div class="line">
-                            <hr>
+                            <hr class="line1">
                         </div>
                         <span class="dot dot-2"></span>
                         <div class="line">
-                            <hr>
+                            <hr class="line2">
                         </div>
                         <span class="dot dot-3"></span>
                         <div class="line">
-                            <hr>
+                            <hr class="line3">
                         </div>
                         <span class="dot dot-4"></span>
                         <div class="line">
-                            <hr>
+                            <hr class="line4">
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
 
             <div class="image">
                 <a href="{{ route('patients.index') }}">
-                    <img src="{{ asset('icons/logo.png') }}" alt="Telkomedika">
+                    <img src="{{ asset('images/review.png') }}" alt="Telkomedika">
                 </a>
             </div>
 

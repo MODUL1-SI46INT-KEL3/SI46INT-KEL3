@@ -57,7 +57,7 @@ class PdfController extends Controller
         $appointments = Appointment::all();
         $nav = 'Appointments List';
 
-        $pdf = PDF::loadView('admins.adminappointments.pdf', compact('appointments', 'nav'));
+        $pdf = PDF::loadView('admins.adminAppointment.pdf', compact('appointments', 'nav'));
 
         return $pdf->download('Appointment_List.pdf');
     }

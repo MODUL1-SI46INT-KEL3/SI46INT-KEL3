@@ -9,6 +9,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorDashboardController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\PrescriptionController;
+use App\Http\Controllers\AdminAppointmentController;
 use App\Http\Controllers\AdminDoctorController;
 use App\Http\Controllers\AdminPatientController;
 use App\Http\Controllers\AdminMedicineController;
@@ -67,6 +68,8 @@ Route::get('/doctordash/login', [AuthController::class, 'showDoctorLoginForm'])-
 Route::post('/doctordash/login', [AuthController::class, 'doctorLogin'])->name('doctordash.login');
 
 //Appointments
+Route::get('/appointments/book', [AppointmentController::class, 'startBooking'])->name('appointments.book');
+
 Route::get('/appointments/step1', [AppointmentController::class, 'createStep1'])->name('appointments.step1_specialist');
 Route::post('/appointments/step1', [AppointmentController::class, 'postStep1']);
 
@@ -126,11 +129,23 @@ Route::post('/symptoms/recommend', [SymptomController::class, 'recommend'])->nam
 
 // Export
 Route::get('/adminPatient/export', [PdfController::class, 'patient_exportPdf'])->name('adminPatient.patient_export');
+Route::get('/adminAppointment/export', [PdfController::class, 'appointments_exportPdf'])->name('adminPatient.appointment_export');
 Route::get('/admindoctors/export', [PdfController::class, 'doctor_exportPdf'])->name('admindoctors.doctor_export');
 Route::get('/adminmedicine/export', [PdfController::class, 'medicine_exportPdf'])->name('adminmedicine.medicine_export');
 Route::get('/adminMedicalRecord/export', [PdfController::class, 'medicalRecord_exportPdf'])->name('adminMedicalRecord.export');
 Route::get('/adminPrescription/export', [PdfController::class, 'prescription_exportPdf'])->name('adminPrescription.export');
 Route::get('/adminsymptoms/export', [PdfController::class, 'symptom_exportPdf'])->name('adminsymptoms.symptom_export');
+
+//Admin Appointments
+Route::prefix('adminAppointment')->name('adminAppointment.')->group(function () {
+    Route::get('/', [AdminAppointmentController::class, 'index'])->name('index');
+    Route::get('/create', [AdminAppointmentController::class, 'create'])->name('create');
+    Route::post('/', [AdminAppointmentController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [AdminAppointmentController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [AdminAppointmentController::class, 'update'])->name('update');
+    Route::delete('/{id}', [AdminAppointmentController::class, 'destroy'])->name('destroy');
+});
+
 
 // Admin Medical Records
 Route::get('/adminMedicalRecord', [AdminMedicalRecordController::class, 'index'])->name('adminMedicalRecord.index');

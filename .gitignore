@@ -46,7 +46,6 @@ Homestead.json
 /public/hot
 /public/mix-manifest.json
 /public/js/*.js
-/public/css/*.css
 
 # Composer & npm
 composer.lock

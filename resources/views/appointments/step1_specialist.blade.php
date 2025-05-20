@@ -22,8 +22,8 @@
     }
 
     h2{
-        font-size: 1rem;
-        font-weight: 600; 
+        font-size: 1.3rem;
+        font-weight: 550; 
         margin-bottom: 30px;
     }
 
@@ -59,6 +59,13 @@
         border: 2px solid #851216;
         color: white;
         padding: 10px 0;
+    }
+
+    .buttons button.next:disabled {
+        background-color: gray;
+        border-color: gray;
+        color: #ddd;
+        cursor: not-allowed;
     }
 
     

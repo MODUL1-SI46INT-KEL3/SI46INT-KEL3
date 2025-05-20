@@ -55,7 +55,7 @@
                 <a href="{{ route('adminsymptoms.index') }}" class="sidebar-link">Symptom</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Appointment</a>
+                <a href="{{ route('adminAppointment.index') }}" class="sidebar-link">Appointment</a>
             </li>
             <li>
                 <a href="{{ route('adminschedules.index') }}" class="sidebar-link">Doctor Schedule</a>

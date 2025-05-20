@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {
+
+    public function startBooking()
+{
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('url.intended', route('appointments.step1_specialist'));
+    }
+
+    return redirect()->route('appointments.step1_specialist');
+}
+
     // Step 1: Select Specialization and Doctor
     public function createStep1()
     {
@@ -23,7 +33,7 @@ class AppointmentController extends Controller
     {
         $request->validate([
             'specialization_id' => 'required|exists:specializations,id',
-            'doctor_id' => 'required|exists:doctor,id', // assuming your table is 'doctor'
+            'doctor_id' => 'required|exists:doctor,id',
         ]);
 
         session([
@@ -88,8 +98,6 @@ class AppointmentController extends Controller
 
     public function postStep3(Request $request)
     {
-        // You can add validation or additional logic here if needed
-
         return redirect()->route('appointments.step4_confirmation');
     }
 

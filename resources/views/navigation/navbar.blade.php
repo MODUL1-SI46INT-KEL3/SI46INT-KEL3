@@ -37,19 +37,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="log_sign">
-                        <div class="log_in">
-                            <a href="{{ url('patients/login') }}">
-                                <button>Log In</button>
-                            </a>
-                        </div>
-                        <div class="sign_in">
-                            <a href="{{ url('patients/create') }}">
-                                <button>Sign Up</button>
-                            </a>
-                        </div>
-                    </div>
                     
                 </div>
 

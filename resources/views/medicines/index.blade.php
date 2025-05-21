@@ -82,7 +82,8 @@
             <div class="cart-summary-item">{{ $cartCount }} Item</div>
             <div class="cart-summary-cost">
                 <div>Estimated Cost</div>
-                <strong>Rp{{ number_format($estimatedTotal ?? 0, 3, '.', '.') }}</strong>
+                <strong>Rp. {{ number_format($estimatedTotal ?? 0, 0, ',', '.') }}</strong>
+
             </div>
         </div>
         <a href="{{ route('cart.index') }}" class="cart-summary-button">See Cart</a>

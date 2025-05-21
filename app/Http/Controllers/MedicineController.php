@@ -23,13 +23,19 @@ class MedicineController extends Controller
         // Cart data
         $cartCount = 0;
         $estimatedTotal = 0;
-
+        
         if (auth()->check()) {
             $cartItems = CartItem::with('medicine')->where('patient_id', auth()->id())->get();
             $cartCount = $cartItems->sum('quantity');
             $estimatedTotal = $cartItems->sum(function ($item) {
-                return $item->quantity * ($item->medicine->price ?? 0);
-            });
+            $rawPrice = optional($item->medicine)->price ?? 0;
+            $normalizedPrice = str_replace(['.', ','], ['', '.'], $rawPrice);
+            $price = (float) $normalizedPrice;
+            return $item->quantity * $price;
+        });
+        } else {
+            $cartItems = [];
+
         }
 
         return view('medicines.index', compact('medicines', 'cartCount', 'estimatedTotal'));

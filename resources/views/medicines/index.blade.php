@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/medicine_index.css') }}" />
 </head>
+
 <body>
 <div id="header">
     <header>
@@ -61,20 +62,36 @@
                             </div>
                         </div>
 
-                        {{-- Add to Cart button disabled and no action --}}
-                        <button 
-                            class="add-to-cart-button" 
-                            onclick="event.preventDefault();" 
-                            title="Add to Cart feature coming soon"
-                        >
-                            Add to Cart
+                        <form action="{{ route('cart.add', $medicine->id) }}" method="POST">
+                            @csrf
+                            <input type="number" name="quantity" value="1" min="1" class="quantity-input" style="height:30px; width:30px; border-radius: 3px;">
+                            <button type="submit" class="add-to-cart-button" title="Add this item to your cart">
+                                Add to Cart
+                            </button>
+                        </form>
+
                         </button>
                     </div>
                 </div>
             </div>
         @endforeach
     @endif
+    @if($cartCount > 0)
+    <div class="cart-summary">
+        <div class="cart-summary-left">
+            <div class="cart-summary-item">{{ $cartCount }} Item</div>
+            <div class="cart-summary-cost">
+                <div>Estimated Cost</div>
+                <strong>Rp. {{ number_format($estimatedTotal ?? 0, 0, ',', '.') }}</strong>
+
+            </div>
+        </div>
+        <a href="{{ route('cart.index') }}" class="cart-summary-button">See Cart</a>
+    </div>
+    @endif
+
 </div>
+
 
 <footer>
     <img src="{{ asset('icons/logo.png') }}" alt="telkomedika" />

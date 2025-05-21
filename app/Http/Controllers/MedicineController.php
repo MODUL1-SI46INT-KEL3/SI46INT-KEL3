@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CartItem;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class MedicineController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('query');
-        
+
         if ($query) {
             $medicines = Medicine::where('medicine_name', 'LIKE', "%{$query}%")
                 ->orWhere('description', 'LIKE', "%{$query}%")
@@ -19,8 +20,28 @@ class MedicineController extends Controller
             $medicines = Medicine::all();
         }
 
-        return view('medicines.index', compact('medicines'));
+        // Cart data
+        $cartCount = 0;
+        $estimatedTotal = 0;
+        
+        if (auth()->check()) {
+            $cartItems = CartItem::with('medicine')->where('patient_id', auth()->id())->get();
+            $cartCount = $cartItems->sum('quantity');
+            $estimatedTotal = $cartItems->sum(function ($item) {
+            $rawPrice = optional($item->medicine)->price ?? 0;
+            $normalizedPrice = str_replace(['.', ','], ['', '.'], $rawPrice);
+            $price = (float) $normalizedPrice;
+            return $item->quantity * $price;
+        });
+        } else {
+            $cartItems = [];
+
+        }
+
+        return view('medicines.index', compact('medicines', 'cartCount', 'estimatedTotal'));
     }
+
+
 
     public function create()
     {
@@ -77,4 +98,6 @@ class MedicineController extends Controller
 
         return redirect()->route('medicines.index')->with('success', 'Medicine has been deleted.');
     }
+
+
 }

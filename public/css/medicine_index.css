@@ -26,6 +26,7 @@ header {
     margin-top: 20px;
 }
 .medicine_body {
+    position: relative;
     margin: 50px;
     margin-left: 120px;
     margin-right: 120px;
@@ -174,4 +175,54 @@ footer hr {
     width: 300px;
     height: 2px;
     background-color: #000000;
+}
+
+.cart-summary {
+    position: sticky;
+    bottom: 0;
+    background-color: #757575;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: sans-serif;
+    z-index: 999;
+}
+
+.cart-summary-left {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.cart-summary-item {
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-right: 2px solid white;
+    padding-right: 1rem;
+}
+
+.cart-summary-cost {
+    margin-left: 1rem;
+}
+
+.cart-summary-cost div {
+    font-weight: 600;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.cart-summary-button {
+    background-color: #8b0000; /* deep red */
+    color: white;
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.cart-summary-button:hover {
+    background-color: #a30000;
 }

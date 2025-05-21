@@ -52,10 +52,10 @@
             <a href="<?php echo e(route('admindoctors.index')); ?>" class="sidebar-link">Doctor</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Symptom</a>
+                <a href="<?php echo e(route('adminsymptoms.index')); ?>" class="sidebar-link">Symptom</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Appointment</a>
+                <a href="<?php echo e(route('adminAppointment.index')); ?>" class="sidebar-link">Appointment</a>
             </li>
             <li>
                 <a href="<?php echo e(route('adminschedules.index')); ?>" class="sidebar-link">Doctor Schedule</a>

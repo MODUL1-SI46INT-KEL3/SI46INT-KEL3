@@ -11,7 +11,7 @@ class MedicineController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('query');
-        
+
         if ($query) {
             $medicines = Medicine::where('medicine_name', 'LIKE', "%{$query}%")
                 ->orWhere('description', 'LIKE', "%{$query}%")
@@ -20,13 +20,21 @@ class MedicineController extends Controller
             $medicines = Medicine::all();
         }
 
+        // Cart data
         $cartCount = 0;
+        $estimatedTotal = 0;
+
         if (auth()->check()) {
-            $cartCount = \App\Models\CartItem::where('patient_id', auth()->id())->sum('quantity');
+            $cartItems = CartItem::with('medicine')->where('patient_id', auth()->id())->get();
+            $cartCount = $cartItems->sum('quantity');
+            $estimatedTotal = $cartItems->sum(function ($item) {
+                return $item->quantity * ($item->medicine->price ?? 0);
+            });
         }
 
-        return view('medicines.index', compact('medicines', 'cartCount'));
+        return view('medicines.index', compact('medicines', 'cartCount', 'estimatedTotal'));
     }
+
 
 
     public function create()

@@ -212,5 +212,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
 Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
+Route::post('/cart/{id}/toggle-select', [CartController::class, 'toggleSelect'])->name('cart.toggleSelect');
+
 
 ?>

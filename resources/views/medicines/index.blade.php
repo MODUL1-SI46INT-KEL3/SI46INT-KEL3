@@ -61,13 +61,14 @@
                             </div>
                         </div>
 
-                        {{-- Add to Cart button disabled and no action --}}
-                        <button 
-                            class="add-to-cart-button" 
-                            onclick="event.preventDefault();" 
-                            title="Add to Cart feature coming soon"
-                        >
-                            Add to Cart
+                        <form action="{{ route('cart.add', $medicine->id) }}" method="POST">
+                            @csrf
+                            <input type="number" name="quantity" value="1" min="1" class="quantity-input">
+                            <button type="submit" class="add-to-cart-button" title="Add this item to your cart">
+                                Add to Cart
+                            </button>
+                        </form>
+
                         </button>
                     </div>
                 </div>

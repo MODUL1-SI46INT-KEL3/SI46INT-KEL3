@@ -21,6 +21,9 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AdminSymptomController;
 use App\Http\Controllers\SymptomController;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\CheckoutController;
+
+use App\Http\Controllers\CartController;
 
 
 
@@ -199,5 +202,15 @@ Route::get('schedules/export/pdf', [ScheduleController::class, 'export'])->name(
 
 Route::get('/specializations/{id}/doctors', [AppointmentController::class, 'getDoctorsBySpecialization']);
 
+//cart
+Route::middleware('auth')->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{medicine}', [CartController::class, 'add'])->name('cart.add');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+
+});
+Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
+Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 
 ?>

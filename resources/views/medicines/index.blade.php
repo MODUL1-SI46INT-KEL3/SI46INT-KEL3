@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/medicine_index.css') }}" />
 </head>
+
 <body>
 <div id="header">
     <header>
@@ -75,7 +76,21 @@
             </div>
         @endforeach
     @endif
+    @if($cartCount > 0)
+    <div class="cart-summary">
+        <div class="cart-summary-left">
+            <div class="cart-summary-item">{{ $cartCount }} Item</div>
+            <div class="cart-summary-cost">
+                <div>Estimated Cost</div>
+                <strong>Rp{{ number_format($estimatedTotal ?? 0, 3, '.', '.') }}</strong>
+            </div>
+        </div>
+        <a href="{{ route('cart.index') }}" class="cart-summary-button">See Cart</a>
+    </div>
+    @endif
+
 </div>
+
 
 <footer>
     <img src="{{ asset('icons/logo.png') }}" alt="telkomedika" />

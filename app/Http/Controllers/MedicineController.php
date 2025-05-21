@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CartItem;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
 
@@ -19,8 +20,14 @@ class MedicineController extends Controller
             $medicines = Medicine::all();
         }
 
-        return view('medicines.index', compact('medicines'));
+        $cartCount = 0;
+        if (auth()->check()) {
+            $cartCount = \App\Models\CartItem::where('patient_id', auth()->id())->sum('quantity');
+        }
+
+        return view('medicines.index', compact('medicines', 'cartCount'));
     }
+
 
     public function create()
     {
@@ -77,4 +84,6 @@ class MedicineController extends Controller
 
         return redirect()->route('medicines.index')->with('success', 'Medicine has been deleted.');
     }
+
+
 }

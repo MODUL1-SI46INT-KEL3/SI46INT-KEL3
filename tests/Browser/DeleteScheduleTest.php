@@ -15,7 +15,10 @@ class DeleteScheduleTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-                    ->assertSee('Laravel');
+                ->visit('/adminschedules')
+                ->press("@delete-button-{$schedule->id}")
+                ->assertPathIs('/adminschedules')
+                ->assertSee('Schedule deleted successfully');
         });
     }
 }

@@ -67,7 +67,7 @@
                 <a href="{{ route('adminPrescription.index') }}" class="sidebar-link">Prescription</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Payment</a>
+                <a href="{{ route('adminpayments.index') }}" class="sidebar-link">Payment</a>
             </li>
             <li>
                 <a href="/" class="sidebar-link">Feedback & Review</a>

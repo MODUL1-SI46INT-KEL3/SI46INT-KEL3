@@ -199,6 +199,18 @@ Route::resource('schedules', ScheduleController::class)->names([
 Route::get('schedules/export/pdf', [ScheduleController::class, 'export'])->name('adminschedules.export');
 
 
+// Payments
+use App\Http\Controllers\PaymentController;
+
+Route::resource('adminpayments', paymentController::class)->names([
+    'index' => 'adminpayments.index',
+    'create' => 'adminpayments.create',
+    'store' => 'adminpayments.store',
+    'edit' => 'adminpayments.edit',
+    'update' => 'adminpayments.update',
+    'destroy' => 'adminpayments.destroy',
+]);
+
 
 Route::get('/specializations/{id}/doctors', [AppointmentController::class, 'getDoctorsBySpecialization']);
 
@@ -213,6 +225,7 @@ Route::middleware('auth')->group(function () {
 Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
 Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 Route::post('/cart/{id}/toggle-select', [CartController::class, 'toggleSelect'])->name('cart.toggleSelect');
+
 
 
 ?>

@@ -10,11 +10,11 @@ class Review extends Model
     use HasFactory;
 
     protected $fillable = [
+        'patient_name', // Add this to fillable
         'rating',
         'category',
         'submitted_at',
         'details',
-        // 'patient_name' is not fillable because you set it in controller or default
     ];
 
     // Set default value for patient_name
@@ -24,5 +24,21 @@ class Review extends Model
 
     protected $casts = [
         'submitted_at' => 'datetime',
+        'rating' => 'integer', // Add this for better type handling
     ];
+
+    // Add some helper methods
+    public function getFormattedDateAttribute()
+    {
+        return $this->submitted_at->format('M d, Y');
+    }
+
+    public function getStarDisplayAttribute()
+    {
+        $stars = '';
+        for ($i = 1; $i <= 5; $i++) {
+            $stars .= $i <= $this->rating ? '★' : '☆';
+        }
+        return $stars;
+    }
 }

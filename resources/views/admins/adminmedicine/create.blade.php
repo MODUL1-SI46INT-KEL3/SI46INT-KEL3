@@ -23,7 +23,7 @@
         <h1>Create New Medicine</h1>
         <a href="{{ route('adminmedicine.index') }}" class="btn btn-primary">Back to Medicines List</a>
     </div>
-    <form method="POST" action="{{ route('adminmedicine.store') }}">
+    <form method="POST" action="{{ route('adminmedicine.store') }}" enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
         <label for="medicine_name" class="form-label">Medicine Name</label>
@@ -41,15 +41,22 @@
     </div>
     <div class="mb-3">
         <label for="price" class="form-label">Price</label>
-        <input type="number" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price') }}">
+        <input type="text" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price') }}">
         @error('price')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
     <div class="mb-3">
         <label for="stock" class="form-label">Stock</label>
-        <input type="number" class="form-control @error('stock') is-invalid @enderror" id="stock" name="stock" value="{{ old('stock') }}">
+        <input type="text" class="form-control @error('stock') is-invalid @enderror" id="stock" name="stock" value="{{ old('stock') }}">
         @error('stock')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="mb-3">
+        <label for="image" class="form-label">Medicine Image</label>
+        <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+        @error('image')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
@@ -57,5 +64,3 @@
     </form>
 </div>
 @endsection
-
-<!-- this is the view for when an admin want to add new medicine -->

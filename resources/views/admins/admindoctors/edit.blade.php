@@ -44,39 +44,108 @@
         border-radius: 5px;
         margin-top: 10px;
     }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        width: 120px;
+        height: 40px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .photo-preview {
+        max-width: 150px;
+        margin-top: 10px;
+        border-radius: 8px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.15);
+    }
 </style>
-<h1>Edit Doctor</h1>
-<form action="{{ route('admindoctors.update', $doctor->id) }}" method="POST">
-    @csrf
-    @method('PUT')
-    <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" name="name" class="form-control" value="{{ $doctor->name }}" required>
-    </div>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" name="email" class="form-control" value="{{ $doctor->email }}" required>
-    </div>
-    <div class="form-group">
-        <label for="working_hours">Working Hours</label>
-        <input type="text" name="working_hours" class="form-control" value="{{ $doctor->working_hours }}" required>
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" name="password" class="form-control" value="{{ $doctor->password }}" required>
-    </div>
-    <div class="form-group">
-        <label for="specialization_id">Specialization ID</label>
-        <input type="number" name="specialization_id" class="form-control" value="{{ $doctor->specialization_id }}" required>
-    </div>
-    <div class="form-group">
-        <label for="phone">Phone</label>
-        <input type="text" name="phone" class="form-control" value="{{ $doctor->phone }}" required>
-    </div>
-    <div class="form-group">
-        <label for="license_number">License Number</label>
-        <input type="text" name="license_number" class="form-control" value="{{ $doctor->license_number }}" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Update</button>
-</form>
+
+<div class="form-container">
+    <h1>Edit Doctor</h1>
+    <form action="{{ route('admindoctors.update', $doctor->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" name="name" class="form-control" value="{{ old('name', $doctor->name) }}" required>
+            @error('name')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" class="form-control" value="{{ old('email', $doctor->email) }}" required>
+            @error('email')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password <small>(Leave blank to keep current password)</small></label>
+            <input type="password" name="password" class="form-control" placeholder="Enter new password if you want to change">
+            @error('password')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        
+        <div class="form-group">
+            <label for="specialization_id">Specialization ID</label>
+            <input type="number" name="specialization_id" class="form-control" value="{{ old('specialization_id', $doctor->specialization_id) }}" required>
+            @error('specialization_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" name="phone" class="form-control" value="{{ old('phone', $doctor->phone) }}" required>
+            @error('phone')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        
+        <div class="form-group">
+            <label for="license_number">License Number</label>
+            <input type="text" name="license_number" class="form-control" value="{{ old('license_number', $doctor->license_number) }}" required>
+            @error('license_number')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="form-group">
+            <label for="photo">Doctor Photo</label>
+            <input type="file" name="photo" id="photo" class="form-control" accept="image/*">
+            @error('photo')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+
+            @if($doctor->photo)
+                <img src="{{ asset($doctor->photo) }}" alt="Doctor Photo" class="photo-preview">
+            @endif
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{{ route('admindoctors.index') }}" class="btn btn-danger">Cancel</a>
+    </form>
+</div>
 @endsection

@@ -117,7 +117,11 @@ section.articles-section {
         </form>
         @foreach($articles as $article)
             <div class="article-card">
+            @if(Str::startsWith($article->img, 'http'))
                 <img src="{{ $article->img }}" alt="Article Image">
+            @else
+                <img src="{{ asset('storage/' . $article->img) }}" alt="Article Image">
+            @endif
                 <div class="card-body">
                     <h5>{{ $article->header }}</h5>
                     <div class="meta">

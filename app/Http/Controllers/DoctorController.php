@@ -13,14 +13,14 @@ class DoctorController extends Controller
         $query = $request->input('query');
 
         if ($query) {
-            $doctors = Doctor::where('name', 'LIKE', "%{$query}%")
+            $doctors = Doctor::with('schedules')->where('name', 'LIKE', "%{$query}%")
                 ->orWhere('email', 'LIKE', "%{$query}%")
                 ->orWhereHas('specialization', function ($q) use ($query) {
                     $q->where('name', 'LIKE', "%{$query}%");
                 })
                 ->get();
         } else {
-            $doctors = Doctor::all();
+            $doctors = Doctor::with('schedules')->get();
         }
 
         return view('doctors.index', compact('doctors', 'query'));
@@ -36,12 +36,12 @@ class DoctorController extends Controller
     {
         $validateData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:doctors,email',
-            'working_hours' => 'required|string|max:255',
+            'email' => 'required|email|unique:doctor,email',
+            // Removed 'working_hours' validation
             'password' => 'required|string|min:8',
             'specialization_id' => 'required|integer|exists:specializations,id', 
             'phone' => 'required|string|max:15',
-            'license_number' => 'required|string|max:50|unique:doctors,license_number',
+            'license_number' => 'required|string|max:50|unique:doctor,license_number',
         ]);
 
         $validateData['password'] = bcrypt($validateData['password']); 
@@ -70,12 +70,12 @@ class DoctorController extends Controller
 
         $validateData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:doctors,email,' . $doctor->id,
-            'working_hours' => 'required|string|max:255',
+            'email' => 'required|email|unique:doctor,email,' . $doctor->id,
+            // Removed 'working_hours' validation
             'password' => 'nullable|string|min:8',
             'specialization_id' => 'required|integer|exists:specializations,id', 
             'phone' => 'required|string|max:15',
-            'license_number' => 'required|string|max:50|unique:doctors,license_number,' . $doctor->id,
+            'license_number' => 'required|string|max:50|unique:doctor,license_number,' . $doctor->id,
         ]);
 
         if ($request->filled('password')) {

@@ -84,6 +84,7 @@
         <thead>
             <tr>
                 <th>No.</th>
+                <th>Image</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
@@ -95,6 +96,13 @@
             @foreach($medicines as $medicine)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
+                    <td>
+                        @if($medicine->image)
+                            <img src="{{ asset($medicine->image) }}" alt="Medicine Image" style="max-width: 60px; max-height: 60px;">
+                        @else
+                            <span>No Image</span>
+                        @endif
+                    </td>
                     <td>{{ $medicine->medicine_name }}</td>
                     <td>{{ $medicine->description }}</td>
                     <td>Rp {{ number_format($medicine->price, 0, ',', '.') }}</td>
@@ -113,5 +121,3 @@
     </table>
 </div>
 @endsection
-
-<!-- this is the main view for when an admin want to CRUD medicine -->

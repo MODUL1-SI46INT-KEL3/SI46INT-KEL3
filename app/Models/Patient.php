@@ -22,4 +22,11 @@ class Patient extends Model implements Authenticatable
         'id_card',
         'password',
     ];
+
+    public function cartItems()
+{
+    return $this->hasMany(CartItem::class);
 }
+}
+
+

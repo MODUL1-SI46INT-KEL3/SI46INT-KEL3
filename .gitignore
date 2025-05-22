@@ -21,3 +21,44 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Laravel & PHP
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+.env
+.env.*
+.phpunit.result.cache
+Homestead.yaml
+Homestead.json
+/.idea
+/.vscode
+/.phpunit.result.cache
+
+# Laravel logs and caches
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# Exclude compiled files
+/public/hot
+/public/mix-manifest.json
+/public/js/*.js
+
+# Composer & npm
+composer.lock
+package-lock.json
+yarn.lock
+
+# OS / Editor system files
+.DS_Store
+Thumbs.db
+*.log
+
+# Prevent committing Laravel log files
+/storage/logs/laravel.log
+
+# Ignoring Sail docker-related files (optional)
+docker-compose.override.yml

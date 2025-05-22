@@ -44,11 +44,35 @@
         border-radius: 5px;
         margin-top: 10px;
     }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        width: 120px;
+        height: 40px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
 </style>
 
 <div class="form-container">
     <h1>Create Doctor</h1>
-    <form action="{{ route('admindoctors.store') }}" method="POST">
+    <form action="{{ route('admindoctors.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             <label for="name">Name</label>
@@ -61,13 +85,6 @@
             <label for="email">Email</label>
             <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
             @error('email')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="form-group">
-            <label for="working_hours">Working Hours</label>
-            <input type="text" name="working_hours" class="form-control" value="{{ old('working_hours') }}" required>
-            @error('working_hours')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
@@ -99,7 +116,18 @@
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
+
+        <!-- Photo Upload -->
+        <div class="form-group">
+            <label for="photo">Doctor Photo</label>
+            <input type="file" name="photo" id="photo" class="form-control" accept="image/*">
+            @error('photo')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
         <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{{ route('admindoctors.index') }}" class="btn btn-danger">Cancel</a>
     </form>
 </div>
 @endsection

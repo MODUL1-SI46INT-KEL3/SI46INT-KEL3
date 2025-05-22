@@ -220,4 +220,39 @@ class PrescriptionController extends Controller
         
         return view('patients.prescriptions.index', compact('prescriptions', 'patient'));
     }
+    
+    /**
+     * Display a specific prescription for the authenticated patient.
+     */
+    public function patientPrescriptionView($id)
+    {
+        $patient = Auth::user();
+        $prescription = Prescription::with(['patient', 'doctor'])
+            ->where('prescription_id', $id)
+            ->where('PatientUser_id', $patient->id)
+            ->firstOrFail();
+        
+        return view('patients.prescriptions.view', compact('prescription'));
+    }
+    
+    /**
+     * Download a prescription file for the authenticated patient.
+     */
+    public function patientPrescriptionDownload($id)
+    {
+        $patient = Auth::user();
+        $prescription = Prescription::where('prescription_id', $id)
+            ->where('PatientUser_id', $patient->id)
+            ->firstOrFail();
+        
+        if (!$prescription->prescription_file) {
+            return back()->with('error', 'No file attached to this prescription.');
+        }
+        
+        if (!Storage::disk('public')->exists($prescription->prescription_file)) {
+            return back()->with('error', 'File not found.');
+        }
+        
+        return Storage::disk('public')->download($prescription->prescription_file);
+    }
 }

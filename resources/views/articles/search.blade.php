@@ -127,7 +127,11 @@ section.articles-section {
             <ul>
                 @foreach($results as $article)
                     <div class="article-card">
-                    <img src="{{ $article->img }}" alt="Article Image">
+                    @if(Str::startsWith($article->img, 'http'))
+                        <img src="{{ $article->img }}" alt="Article Image">
+                    @else
+                        <img src="{{ asset('storage/' . $article->img) }}" alt="Article Image">
+                    @endif
                     <div class="card-body">
                         <h5>{{ $article->header }}</h5>
                         <div class="meta">

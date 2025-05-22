@@ -47,12 +47,13 @@
                 <div class="main_header">
                     <nav>
                         <ul style="list-style-type:none;" class="nav">
-                            <li class="main_nav"><a href="#services">Our Services</a></li>
                             <li class="main_nav"><a href="{{ url('doctors') }}">Doctors</a></li>
                             <li class="main_nav"><a href="{{ url('symptoms') }}">Check Symptoms</a></li>
                             <li class="main_nav"><a href="{{ url('medicines') }}">Medicine</a></li> 
+                            <li class="main_nav"><a href="{{ route('patients.prescriptions') }}">My Prescriptions</a></li>
+                            <li class="main_nav"><a href="/reviews">Review Us</a></li>
                             <li class="gradient">
-                                <a href="{{ url('appointments') }}"><button> Book Appointment > </button></a>
+                                <a href="{{ route('appointments.step1_specialist') }}"><button> Book Appointment > </button></a>
                             </li>
                         </ul>
                     </nav>

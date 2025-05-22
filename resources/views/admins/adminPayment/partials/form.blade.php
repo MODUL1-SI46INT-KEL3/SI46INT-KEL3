@@ -10,6 +10,11 @@
 </div>
 
 <div class="form-group">
+    <label for="item">Item Purchased</label>
+    <input type="text" name="item" id="item" class="form-control" required>
+</div>
+
+<div class="form-group">
     <label for="amount">Amount</label>
     <input type="number" name="amount" step="0.01" class="form-control" value="{{ old('amount', $payment->amount ?? '') }}" required>
 </div>

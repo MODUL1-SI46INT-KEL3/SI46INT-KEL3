@@ -15,6 +15,7 @@
             <tr>
                 <th>ID</th>
                 <th>Patient</th>
+                <th>Item</th>
                 <th>Amount</th>
                 <th>Method</th>
                 <th>Status</th>
@@ -27,6 +28,7 @@
                 <tr>
                     <td>{{ $payment->payment_id }}</td>
                     <td>{{ $payment->patient->patient_name ?? 'N/A' }}</td>
+                    <td>{{ $payment->item }}</td>
                     <td>{{ $payment->amount }}</td>
                     <td>{{ $payment->payment_method }}</td>
                     <td>{{ $payment->payment_status }}</td>

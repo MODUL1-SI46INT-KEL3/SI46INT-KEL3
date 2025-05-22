@@ -14,6 +14,7 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id('payment_id');
             $table->unsignedBigInteger('patient_id')->constrained('patient')->onDelete('cascade');
+            $table->string('item');
             $table->decimal('amount', 10, 2);
             $table->enum('payment_method', ['Credit Card', 'Debit Card', 'Cash', 'Insurance', 'Online Payment']);
             $table->enum('payment_status', ['Pending', 'Completed', 'Failed', 'Refunded']);

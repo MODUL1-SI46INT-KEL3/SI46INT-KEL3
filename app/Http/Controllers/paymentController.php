@@ -24,6 +24,7 @@ class PaymentController extends Controller
     {
         $request->validate([
             'patient_id' => 'required|exists:patient,id',
+            'item' => 'required|string|max:255',
             'amount' => 'required|numeric',
             'payment_method' => 'required|in:Credit Card,Debit Card,Cash,Insurance,Online Payment',
             'payment_status' => 'required|in:Pending,Completed,Failed,Refunded',
@@ -44,6 +45,7 @@ class PaymentController extends Controller
     {
         $request->validate([
             'patient_id' => 'required|exists:patient,id',
+            'item' => 'required|string|max:255',
             'amount' => 'required|numeric',
             'payment_method' => 'required|in:Credit Card,Debit Card,Cash,Insurance,Online Payment',
             'payment_status' => 'required|in:Pending,Completed,Failed,Refunded',

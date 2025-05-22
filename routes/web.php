@@ -181,6 +181,7 @@ Route::resource('medicines', MedicineController::class);
 // Feedback n Review
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 // Optional category-specific routes if you want dropdown redirection working:
 Route::get('/reviews/website', [ReviewController::class, 'index'])->name('reviews.website');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -11,14 +12,13 @@ class ReviewController extends Controller
      * Display a listing of the reviews.
      */
     public function index(Request $request)
-{
-    $category = $request->query('category') ?? 'web'; // default to 'web'
+    {
+        $category = $request->query('category') ?? 'web'; // default to 'web'
 
-    $reviews = Review::where('category', $category)->latest()->get();
+        $reviews = Review::where('category', $category)->latest()->get();
 
-    return view('reviews.index', compact('reviews', 'category'));
-}
-
+        return view('reviews.index', compact('reviews', 'category'));
+    }
 
     /**
      * Show the form for creating a new review.
@@ -31,27 +31,43 @@ class ReviewController extends Controller
     /**
      * Store a newly created review in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'category' => 'required|in:shop,appointment,web',
-            'submitted_at' => 'required|date',
-            'details' => 'required|string',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'rating' => 'required|integer|min:1|max:5',
+        'category' => 'required|in:shop,appointment,web',
+        'submitted_at' => 'required|date',
+        'details' => 'required|string',
+    ]);
 
-        Review::create([
-            'patient_name' => auth()->check() ? auth()->user()->name : 'Anonymous',
-            'rating' => $request->rating,
-            'category' => $request->category,
-            'submitted_at' => $request->submitted_at,
-            'details' => $request->details,
-        ]);
-        
-        // Add this flash message
-     return redirect()->route('reviews.index')->with('success', 'Thank you for your feedback! We appreciate your time.');
+    $patientName = 'Anonymous';
+    if (Auth::check()) {
+        $user = Auth::user();
+        $patientName = $user->patient_name ?? $user->name ?? 'Anonymous';
+    }
+
+    Review::create([
+        'patient_name' => $patientName,
+        'rating' => $request->rating,
+        'category' => $request->category,
+        'submitted_at' => $request->submitted_at,
+        'details' => $request->details,
+    ]);
+
+    // If AJAX, return JSON
+    if ($request->ajax()) {
+        return response()->json(['success' => true]);
+    }
+
+    // Otherwise, fallback to redirect
+    if ($request->category === 'appointment') {
+        return redirect()->route('reviews.index')->with('success', 'Thank you for reviewing your appointment experience!');
+    } elseif ($request->category === 'shop') {
+        return redirect()->route('reviews.index')->with('success', 'Thank you for reviewing your medicine purchase!');
+    } else {
+        return redirect()->route('reviews.index')->with('success', 'Thank you for your feedback! We appreciate your time.');
+    }
 }
-    
 
     /**
      * Display the specified review.
@@ -87,7 +103,8 @@ class ReviewController extends Controller
         $review = Review::findOrFail($id);
         $review->update($request->all());
 
-        return redirect()->route('review.index')->with('success', 'Review updated successfully.');
+        // Fix: Use correct route name
+        return redirect()->route('reviews.index')->with('success', 'Review updated successfully.');
     }
 
     /**
@@ -98,6 +115,7 @@ class ReviewController extends Controller
         $review = Review::findOrFail($id);
         $review->delete();
 
-        return redirect()->route('review.index')->with('success', 'Review deleted successfully.');
+        // Fix: Use correct route name
+        return redirect()->route('reviews.index')->with('success', 'Review deleted successfully.');
     }
 }

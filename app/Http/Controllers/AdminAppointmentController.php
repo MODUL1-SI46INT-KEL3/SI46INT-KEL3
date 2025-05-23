@@ -81,23 +81,40 @@ class AdminAppointmentController extends Controller
             'patient_id' => 'required|exists:patient,id',
             'doctor_id' => 'required|exists:doctor,id',
             'schedule_id' => 'required|exists:schedules,schedule_id',
+            'status' => 'required|in:pending,canceled,done,no show',
         ]);
 
-        // If schedule changed, check availability and update old schedule
-        if ($appointment->schedule_id != $validated['schedule_id']) {
-            $newSchedule = Schedule::findOrFail($validated['schedule_id']);
-            if (!$newSchedule->is_available) {
-                return back()->withErrors(['schedule_id' => 'Selected schedule is not available'])->withInput();
+        // Handle schedule availability if schedule or status changed
+        if ($appointment->schedule_id != $validated['schedule_id'] || $appointment->status != $validated['status']) {
+            // If schedule changed, mark old schedule available and new schedule unavailable
+            if ($appointment->schedule_id != $validated['schedule_id']) {
+                $oldSchedule = Schedule::find($appointment->schedule_id);
+                if ($oldSchedule) {
+                    $oldSchedule->update(['is_available' => true]);
+                }
+
+                $newSchedule = Schedule::findOrFail($validated['schedule_id']);
+                if (!$newSchedule->is_available) {
+                    return back()->withErrors(['schedule_id' => 'Selected schedule is not available'])->withInput();
+                }
+                $newSchedule->update(['is_available' => false]);
             }
 
-            // Mark old schedule available
-            $oldSchedule = Schedule::find($appointment->schedule_id);
-            if ($oldSchedule) {
-                $oldSchedule->update(['is_available' => true]);
+            // If status changed to canceled, mark schedule available
+            if ($appointment->status != 'canceled' && $validated['status'] == 'canceled') {
+                $schedule = Schedule::find($appointment->schedule_id);
+                if ($schedule) {
+                    $schedule->update(['is_available' => true]);
+                }
             }
 
-            // Mark new schedule unavailable
-            $newSchedule->update(['is_available' => false]);
+            // If status changed from canceled to something else, mark schedule unavailable
+            if ($appointment->status == 'canceled' && $validated['status'] != 'canceled') {
+                $schedule = Schedule::find($validated['schedule_id']);
+                if ($schedule && $schedule->is_available) {
+                    $schedule->update(['is_available' => false]);
+                }
+            }
         }
 
         $appointment->update($validated);

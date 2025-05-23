@@ -52,6 +52,19 @@
             @enderror
         </div>
 
+        <div class="mb-3">
+            <label for="status">Status</label>
+            <select name="status" id="status" class="form-control" required>
+                <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                <option value="canceled" {{ old('status') == 'canceled' ? 'selected' : '' }}>Canceled</option>
+                <option value="done" {{ old('status') == 'done' ? 'selected' : '' }}>Done</option>
+                <option value="no show" {{ old('status') == 'no show' ? 'selected' : '' }}>No Show</option>
+            </select>
+            @error('status')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
         <button type="submit" class="btn btn-primary">Create Appointment</button>
         <a href="{{ route('adminAppointment.index') }}" class="btn btn-danger">Cancel</a>
     </form>

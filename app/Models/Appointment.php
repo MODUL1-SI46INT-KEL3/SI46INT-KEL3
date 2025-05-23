@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class Appointment extends Model
 {
-    protected $fillable = ['patient_id', 'doctor_id', 'schedule_id', 'booking_id'];
+    protected $fillable = ['patient_id', 'doctor_id', 'schedule_id', 'booking_id', 'status'];
 
     protected static function generateBookingId()
     {

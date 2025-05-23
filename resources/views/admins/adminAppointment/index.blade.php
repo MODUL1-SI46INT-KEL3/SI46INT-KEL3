@@ -68,6 +68,7 @@
                 <th>Patient</th>
                 <th>Doctor</th>
                 <th>Schedule</th>
+                <th>Status</th>
                 <th>Booking ID</th>
                 <th>Actions</th>
             </tr>
@@ -86,6 +87,17 @@
                             -
                         @endif
                     </td>
+                    <td>
+                        <span class="badge 
+                            @switch($appointment->status)
+                                @case('pending') bg-warning @break
+                                @case('canceled') bg-danger @break
+                                @case('done') bg-success @break
+                                @case('no show') bg-secondary @break
+                            @endswitch">
+                            {{ ucfirst($appointment->status) }}
+                        </span>
+                    </td>
                     <td>{{ $appointment->booking_id }}</td>
                     <td>
                         <a href="{{ route('adminAppointment.edit', $appointment->id) }}" class="btn btn-warning">Edit</a>
@@ -97,7 +109,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="6" class="text-center">No appointments found.</td></tr>
+                <tr><td colspan="7" class="text-center">No appointments found.</td></tr>
             @endforelse
         </tbody>
     </table>

@@ -49,6 +49,7 @@
                 <th>Doctor Name</th>
                 <th>Schedule Date</th>
                 <th>Schedule Time</th>
+                <th>Status</th>
                 <th>Booking ID</th>
             </tr>
         </thead>
@@ -65,6 +66,20 @@
                         @else
                             -
                         @endif
+                    </td>
+                    <td>
+                        @php
+                            $statusClass = match($appointment->status) {
+                                'pending' => 'status-pending',
+                                'canceled' => 'status-canceled',
+                                'done' => 'status-done',
+                                'no show' => 'status-no-show',
+                                default => '',
+                            };
+                        @endphp
+                        <span class="status-badge {{ $statusClass }}">
+                            {{ ucfirst($appointment->status ?? '-') }}
+                        </span>
                     </td>
                     <td>{{ $appointment->booking_id }}</td>
                 </tr>

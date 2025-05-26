@@ -22,7 +22,7 @@ use App\Http\Controllers\AdminSymptomController;
 use App\Http\Controllers\SymptomController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\CheckoutController;
-
+use App\Http\Controllers\AdminReviewController;
 use App\Http\Controllers\CartController;
 
 
@@ -183,10 +183,20 @@ Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index'
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
+
 // Optional category-specific routes if you want dropdown redirection working:
 Route::get('/reviews/website', [ReviewController::class, 'index'])->name('reviews.website');
 Route::get('/reviews/appointment', [ReviewController::class, 'index'])->name('reviews.appointment');
 Route::get('/reviews/shop', [ReviewController::class, 'index'])->name('reviews.shop');
+
+
+
+Route::prefix('adminreviews')->name('adminreviews.')->group(function () {
+    Route::get('/', [AdminReviewController::class, 'index'])->name('index');
+    Route::get('/{id}', [AdminReviewController::class, 'show'])->name('show');
+    Route::delete('/{id}', [AdminReviewController::class, 'destroy'])->name('destroy');
+});
+
 
 // Schedule
 Route::resource('schedules', ScheduleController::class)->names([

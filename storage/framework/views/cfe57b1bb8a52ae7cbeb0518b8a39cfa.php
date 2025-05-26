@@ -67,10 +67,10 @@
                 <a href="<?php echo e(route('adminPrescription.index')); ?>" class="sidebar-link">Prescription</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Payment</a>
+                <a href="<?php echo e(route('adminpayments.index')); ?>" class="sidebar-link">Payment</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Feedback & Review</a>
+                <a href="<?php echo e(route('adminreviews.index')); ?>" class="sidebar-link">Feedback & Review</a>
             </li>
             <li>
                 <a href="<?php echo e(route('adminarticle.index')); ?>" class="sidebar-link">Website Articles</a>

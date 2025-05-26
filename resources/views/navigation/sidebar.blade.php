@@ -70,7 +70,7 @@
                 <a href="{{ route('adminpayments.index') }}" class="sidebar-link">Payment</a>
             </li>
             <li>
-                <a href="/" class="sidebar-link">Feedback & Review</a>
+                <a href="{{ route('adminreviews.index') }}" class="sidebar-link">Feedback & Review</a>
             </li>
             <li>
                 <a href="{{ route('adminarticle.index') }}" class="sidebar-link">Website Articles</a>

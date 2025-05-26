@@ -237,6 +237,12 @@ Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('c
 Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 Route::post('/cart/{id}/toggle-select', [CartController::class, 'toggleSelect'])->name('cart.toggleSelect');
 
+//Checkout
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout/pay', [CheckoutController::class, 'pay'])->name('checkout.pay');
+    Route::get('/checkout/complete', [CheckoutController::class, 'complete'])->name('checkout.complete');
+});
 
 
 ?>

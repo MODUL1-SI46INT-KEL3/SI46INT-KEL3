@@ -13,11 +13,15 @@ class AdminReviewController extends Controller
      */
     public function index(Request $request)
     {
-        $category = $request->query('category', 'web');
-        $reviews = Review::where('category', $category)->latest()->get();
+        $category = $request->query('category');
+
+        $reviews = $category
+            ? Review::where('category', $category)->latest()->get()
+            : Review::latest()->get();
 
         return view('admins.adminreviews.index', compact('reviews', 'category'));
     }
+
 
     /**
      * Show a single review.

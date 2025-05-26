@@ -56,9 +56,12 @@
 
 <div class="container">
     <div class="header">
-        <h1>Customer Reviews - {{ ucfirst($category) }}</h1>
+        <h1>
+            Customer Reviews{{ $category ? ' on ' . ucfirst($category) : '' }}
+        </h1>
         <form method="GET" action="{{ route('adminreviews.index') }}">
             <select name="category" onchange="this.form.submit()" class="form-select" style="width: 200px; height: 40px; border-radius: 5px;">
+                <option value="" {{ $category == '' ? 'selected' : '' }}>No Filter</option>
                 <option value="web" {{ $category == 'web' ? 'selected' : '' }}>Web</option>
                 <option value="shop" {{ $category == 'shop' ? 'selected' : '' }}>Shop</option>
                 <option value="appointment" {{ $category == 'appointment' ? 'selected' : '' }}>Appointment</option>

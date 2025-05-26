@@ -299,9 +299,7 @@ button {
                 </div>
                 <p><strong>For {{ $cartItems->sum('quantity') }} Items</strong></p>
             </div>
-
-            <form action="{{ route('checkout') }}" method="POST" class="mt-4">
-                @csrf
+            <form action="{{ route('checkout') }}" method="GET" class="mt-4">
                 <button class="w-full bg-red-700 text-white py-2 rounded shadow" style="font-family: Inter, sans-serif; font-weight:bold;">
                     Continue to Pay
                 </button>

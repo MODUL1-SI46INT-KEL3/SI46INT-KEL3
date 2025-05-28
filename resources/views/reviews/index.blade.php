@@ -191,18 +191,18 @@
             <div class="col-md-7">
                 <div class="card card-custom p-4 mb-4">
                     <div class="mb-3" style="font-weight:600;">Review us!</div>
-                    
+
                     <label for="reviewSelector" style="font-weight:400;">What would you like to review?</label>
-                    <select id="reviewSelector" class="form-select mb-3" style="margin-top:2px;">
+                    <select id="reviewSelector" class="form-select mb-3" style="margin-top:2px;" onchange="toggleDoctorDropdown()">
                         <option value="web" {{ ($category ?? 'web') == 'web' ? 'selected' : '' }}>🌐 TelkomMedika Website</option>
                         <option value="appointment" {{ ($category ?? '') == 'appointment' ? 'selected' : '' }}>📅 Appointment Experience</option>
                         <option value="shop" {{ ($category ?? '') == 'shop' ? 'selected' : '' }}>💊 Medicine Purchase</option>
                     </select>
 
                     <!-- Doctor Dropdown Container -->
-                    <div id="doctorDropdownContainer">
+                    <div id="doctorDropdownContainer" style="display: {{ ($category ?? '') === 'appointment' ? 'flex' : 'none' }}; flex-direction: column; margin-bottom: 20px; widthL 100%;">
                         <label for="doctorSelector" style="font-weight:400;">Which doctor would you like to review?</label>
-                        <select id="doctorSelector" class="form-select" style="margin-top:2px;">
+                        <select id="doctorSelector" class="form-select" style="margin-top:2px; width: 100%;">
                             <option value="">Select a doctor...</option>
                             @if(isset($doctors))
                                 @foreach($doctors as $doctor)
@@ -211,6 +211,7 @@
                             @endif
                         </select>
                     </div>
+
 
                     <!-- Dynamic Category Info -->
                     <div id="categoryInfo" class="category-info">
@@ -384,7 +385,26 @@
                 document.getElementById('doctorSelector').focus();
                 return false;
             }
+
+
+            
+
         });
+
+        function toggleDoctorDropdown() {
+                const selectedCategory = document.getElementById('reviewSelector').value;
+                const doctorDropdown = document.getElementById('doctorDropdownContainer');
+
+                if (selectedCategory === 'appointment') {
+                    doctorDropdown.style.display = 'flex';
+                } else {
+                    doctorDropdown.style.display = 'none';
+                }
+            }
+
+            // Trigger on page load too
+            document.addEventListener('DOMContentLoaded', toggleDoctorDropdown);
+
     </script>
 </body>
 </html>

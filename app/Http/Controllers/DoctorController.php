@@ -37,7 +37,6 @@ class DoctorController extends Controller
         $validateData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:doctor,email',
-            // Removed 'working_hours' validation
             'password' => 'required|string|min:8',
             'specialization_id' => 'required|integer|exists:specializations,id', 
             'phone' => 'required|string|max:15',
@@ -92,4 +91,9 @@ class DoctorController extends Controller
         $doctor->delete();
         return redirect()->route('doctors.index')->with('success', 'Doctor has been deleted.');
     }
+    public function yourFormMethod()
+{
+    $doctors = Doctor::all(['id', 'name']);
+    return view('your.review.form.view', compact('doctors'));
+}
 }

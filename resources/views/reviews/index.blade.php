@@ -57,7 +57,7 @@
             font-size: 1rem;
         }
 
-         #reviewSelector {
+         #reviewSelector, #doctorSelector {
             padding: 12px 16px !important;
             font-size: 1.1rem !important;
             height: auto !important;
@@ -69,17 +69,23 @@
             transition: all 0.3s ease !important;
         }
 
-        #reviewSelector:focus {
+        #reviewSelector:focus, #doctorSelector:focus {
             border-color: #851216 !important;
             box-shadow: 0 3px 10px rgba(133,18,22,0.15) !important;
             outline: none !important;
         }
 
-        #reviewSelector option {
+        #reviewSelector option, #doctorSelector option {
             padding: 12px !important;
             font-size: 1.05rem !important;
             line-height: 1.4 !important;
         }
+
+        #doctorDropdownContainer {
+            display: none;
+            margin-top: 15px;
+        }
+
         #star-rating {
             display: flex;
             justify-content: center;
@@ -193,6 +199,19 @@
                         <option value="shop" {{ ($category ?? '') == 'shop' ? 'selected' : '' }}>💊 Medicine Purchase</option>
                     </select>
 
+                    <!-- Doctor Dropdown Container -->
+                    <div id="doctorDropdownContainer">
+                        <label for="doctorSelector" style="font-weight:400;">Which doctor would you like to review?</label>
+                        <select id="doctorSelector" class="form-select" style="margin-top:2px;">
+                            <option value="">Select a doctor...</option>
+                            @if(isset($doctors))
+                                @foreach($doctors as $doctor)
+                                    <option value="{{ $doctor->id }}">Dr. {{ $doctor->name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
                     <!-- Dynamic Category Info -->
                     <div id="categoryInfo" class="category-info">
                         <h5 id="categoryTitle">Website Experience</h5>
@@ -212,6 +231,7 @@
                     <form action="{{ route('reviews.store') }}" method="POST" id="reviewForm">
                         @csrf
                         <input type="hidden" name="category" id="categoryInput" value="{{ $category ?? 'web' }}">
+                        <input type="hidden" name="doctor_id" id="doctorInput" value="">
                         <input type="hidden" name="rating" id="rating" required>
                         <input type="hidden" name="submitted_at" value="{{ now() }}">
                         
@@ -251,8 +271,8 @@
             },
             'appointment': {
                 title: 'Appointment Experience',
-                description: 'Tell us about your appointment booking process and overall experience.',
-                placeholder: 'How was your appointment booking experience? Was it easy to schedule?',
+                description: 'Tell us about your appointment booking process and experience with the doctor.',
+                placeholder: 'How was your appointment experience? Was the doctor helpful?',
                 buttonText: 'Submit Appointment Review'
             },
             'shop': {
@@ -288,9 +308,19 @@
         document.getElementById('reviewSelector').addEventListener('change', function () {
             const selectedCategory = this.value;
             const categoryData = categoryInfo[selectedCategory];
+            const doctorContainer = document.getElementById('doctorDropdownContainer');
             
             // Update category input
             document.getElementById('categoryInput').value = selectedCategory;
+            
+            // Show/hide doctor dropdown
+            if (selectedCategory === 'appointment') {
+                doctorContainer.style.display = 'block';
+            } else {
+                doctorContainer.style.display = 'none';
+                document.getElementById('doctorInput').value = '';
+                document.getElementById('doctorSelector').value = '';
+            }
             
             // Update category info display
             document.getElementById('categoryTitle').textContent = categoryData.title;
@@ -305,6 +335,11 @@
             stars.forEach(s => s.classList.add('unselected'));
         });
 
+        // Doctor selection logic
+        document.getElementById('doctorSelector').addEventListener('change', function () {
+            document.getElementById('doctorInput').value = this.value;
+        });
+
         // Initialize with current category
         document.addEventListener('DOMContentLoaded', function() {
             const currentCategory = document.getElementById('categoryInput').value;
@@ -315,6 +350,11 @@
                 document.getElementById('categoryDescription').textContent = categoryData.description;
                 document.getElementById('reviewTextarea').placeholder = categoryData.placeholder;
                 document.getElementById('submitBtn').textContent = categoryData.buttonText;
+            }
+
+            // Show doctor dropdown if appointment is selected
+            if (currentCategory === 'appointment') {
+                document.getElementById('doctorDropdownContainer').style.display = 'block';
             }
         });
 
@@ -331,6 +371,17 @@
                 e.preventDefault();
                 alert('Please write some feedback before submitting your review.');
                 textarea.focus();
+                return false;
+            }
+
+            // Validate doctor selection for appointment reviews
+            const category = document.getElementById('categoryInput').value;
+            const doctorId = document.getElementById('doctorInput').value;
+            
+            if (category === 'appointment' && !doctorId) {
+                e.preventDefault();
+                alert('Please select a doctor for your appointment review.');
+                document.getElementById('doctorSelector').focus();
                 return false;
             }
         });

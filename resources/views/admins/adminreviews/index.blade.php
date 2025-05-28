@@ -39,25 +39,23 @@
         border: none;
         border-radius: 5px;
         color: white;
-        width: 150px;
+        width: 60px;
         height: 40px;
         cursor: pointer;
         text-decoration: none;
         margin-bottom: 5px;
         margin-top: 5px;
     }
-    .btn-success { background-color: #28a745; }
-    .btn-success:hover { background-color: #218838; }
-    .btn-warning { background-color: #ff9900; }
-    .btn-warning:hover { background-color: #e68a00; }
-    .btn-danger { background-color: #dc3545; }
-    .btn-danger:hover { background-color: #c82333; }
+    .btn-warning { background-color:rgb(224, 166, 127); }
+    .btn-warning:hover { background-color:rgb(241, 174, 133); }
+    .btn-danger { background-color:rgb(206, 84, 79); }
+    .btn-danger:hover { background-color:rgb(160, 83, 81); }
 </style>
 
 <div class="container">
     <div class="header">
         <h1>
-            Customer Reviews{{ $category ? ' on ' . ucfirst($category) : '' }}
+            Customer Reviews{{ $category ? ' for ' . ucfirst($category) : '' }}
         </h1>
         <form method="GET" action="{{ route('adminreviews.index') }}">
             <select name="category" onchange="this.form.submit()" class="form-select" style="width: 200px; height: 40px; border-radius: 5px;">
@@ -73,36 +71,42 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table class="table table-bordered">
+    <table class="table table-bordered" style="table-layout: fixed; width: 100%;">
         <thead>
             <tr>
-                <th>No.</th>
-                <th>Patient Name</th>
-                <th>Rating</th>
-                <th>Submitted At</th>
-                <th>Details</th>
-                <th>Actions</th>
+                <th style="width: 5%;">No.</th>
+                <th style="width: 20%;">Patient Name</th>
+                <th style="width: 10%;">Rating</th>
+                <th style="width: 20%;">Submitted At</th>
+                <th style="width: 35%;">Details</th>
+                <th style="width: 10%;">Actions</th>
             </tr>
         </thead>
         <tbody>
             @forelse($reviews as $review)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $review->patient_name }}</td>
-                    <td>{{ $review->rating }} / 5</td>
-                    <td>{{ \Carbon\Carbon::parse($review->submitted_at)->format('d M Y') }}</td>
-                    <td>{{ Str::limit($review->details, 50) }}</td>
-                    <td>
-                        <a href="{{ route('adminreviews.show', $review->id) }}" class="btn btn-primary">View</a>
-                        <form action="{{ route('adminreviews.destroy', $review->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="confirmDelete(event)">Delete</button>
-                        </form>
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $review->patient_name }}</td>
+                        <td>{{ $review->rating }} / 5</td>
+                        <td>{{ \Carbon\Carbon::parse($review->submitted_at)->format('d M Y') }}</td>
+                        <td>{{ Str::limit($review->details, 50) }}</td>
+                        <td>
+                            @if($review->category === 'appointment')
+                                <a href="/" class="btn btn-warning">
+                                    <img src="{{ asset('icons/send.png') }}" alt="Send" style="width: 20px; height: 20px;"> 
+                                </a>
+                            @endif
 
+                            <form action="{{ route('adminreviews.destroy', $review->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="confirmDelete(event)">
+                                    <img src="{{ asset('icons/trash.png') }}" alt="Send" style="width: 20px; height: 20px;">  
+                                </button>
+                            </form>
                         </td>
-                </tr>
-            @empty
+                    </tr>
+                @empty
                 <tr>
                     <td colspan="6">No reviews available for this category.</td>
                 </tr>

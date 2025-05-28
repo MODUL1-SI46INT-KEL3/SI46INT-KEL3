@@ -21,15 +21,25 @@ class AdminReviewController extends Controller
 
         return view('admins.adminreviews.index', compact('reviews', 'category'));
     }
-
-
-    /**
-     * Show a single review.
-     */
-    public function show($id)
+    public function markAsSent($id)
     {
         $review = Review::findOrFail($id);
-        return view('admins.adminreviews.show', compact('review'));
+        $review->status = true; // or 1
+        $review->save();
+
+        return redirect()->route('adminreviews.index')->with('success', 'Review sent to doctor.');
+    }
+    public function markAsUnsent($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->status = false;
+        $review->save();
+
+        return redirect()->route('adminreviews.index')->with([
+            'message' => 'Review retracted successfully.',
+            'alert-type' => 'warning'
+        ]);
+
     }
 
     /**
@@ -40,6 +50,8 @@ class AdminReviewController extends Controller
         $review = Review::findOrFail($id);
         $review->delete();
 
-        return redirect()->route('reviews.index')->with('success', 'Review deleted successfully.');
-    }
+        return redirect()->route('adminreviews.index')->with([
+            'message' => 'Review deleted successfully.',
+            'alert-type' => 'danger'
+        ]);}
 }

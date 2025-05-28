@@ -50,6 +50,7 @@
     .btn-warning:hover { background-color:rgb(241, 174, 133); }
     .btn-danger { background-color:rgb(206, 84, 79); }
     .btn-danger:hover { background-color:rgb(160, 83, 81); }
+    .danger2 {background-color:rgb(211, 121, 118);}
 </style>
 
 <div class="container">
@@ -70,6 +71,13 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+
+    @if(session('message'))
+    <div class="alert alert-{{ session('alert-type', 'success') }}">
+        {{ session('message') }}
+    </div>
+    @endif
+
 
     <table class="table table-bordered" style="table-layout: fixed; width: 100%;">
         <thead>
@@ -92,9 +100,24 @@
                         <td>{{ Str::limit($review->details, 50) }}</td>
                         <td>
                             @if($review->category === 'appointment')
-                                <a href="/" class="btn btn-warning">
-                                    <img src="{{ asset('icons/send.png') }}" alt="Send" style="width: 20px; height: 20px;"> 
-                                </a>
+                                @if($review->status)
+                                    <form method="POST" action="{{ route('adminreviews.markUnsent', $review->id) }}" style="display:inline;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-danger danger2" onclick="return confirm('Are you sure you want to retract this review?');">
+                                            <img src="{{ asset('icons/cancelsend.png') }}" alt="Retract" style="width: 20px; height: 20px;">
+                                        </button>
+                                    </form>
+                                @else
+                                    {{-- Not Sent: show send form --}}
+                                    <form method="POST" action="{{ route('adminreviews.markSent', $review->id) }}" style="display:inline;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-warning">
+                                            <img src="{{ asset('icons/send.png') }}" alt="Send" style="width: 20px; height: 20px;">
+                                        </button>
+                                    </form>
+                                @endif
                             @endif
 
                             <form action="{{ route('adminreviews.destroy', $review->id) }}" method="POST" style="display:inline;">

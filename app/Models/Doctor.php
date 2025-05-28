@@ -3,24 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable; 
-use Illuminate\Auth\Authenticatable as AuthenticatableTrait; 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 
-class Doctor extends Model implements Authenticatable 
+class Doctor extends Model implements Authenticatable
 {
     use AuthenticatableTrait;
 
-    protected $table = 'doctor'; 
+    protected $table = 'doctor'; // important to match database table
 
     protected $fillable = [
-         'name', 'email', 'password', 'specialization_id', 'phone', 'license_number', 'photo'
+        'name', 'email', 'password', 'specialization_id', 'phone', 'license_number', 'photo'
     ];
 
     public function specialization()
     {
         return $this->belongsTo(Specialization::class);
     }
-    
+
     public function medicalRecords()
     {
         return $this->hasMany(MedicalRecord::class);
@@ -31,9 +31,11 @@ class Doctor extends Model implements Authenticatable
         return $this->hasMany(Schedule::class);
     }
 
-    /**
-     * Get formatted working hours as "09:00-12:00, 13:00-17:00"
-     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function getWorkingHoursAttribute()
     {
         $schedules = $this->schedules()
@@ -58,7 +60,4 @@ class Doctor extends Model implements Authenticatable
             return response()->json(['error' => 'Server error', 'message' => $e->getMessage()], 500);
         }
     }
-
-
-
 }

@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
-    public function index(Request $request)
+        public function index(Request $request)
     {
         $category = $request->query('category') ?? 'web';
         $reviews = Review::where('category', $category)->latest()->get();
+        $doctors = Doctor::all();
 
-        return view('reviews.index', compact('reviews', 'category'));
+        return view('reviews.index', compact('reviews', 'category', 'doctors'));
     }
+
 
     public function create()
     {

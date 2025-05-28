@@ -97,7 +97,7 @@
                         <td>{{ $review->patient_name }}</td>
                         <td>{{ $review->rating }} / 5</td>
                         <td>{{ \Carbon\Carbon::parse($review->submitted_at)->format('d M Y') }}</td>
-                        <td>{{ Str::limit($review->details, 50) }}</td>
+                        <td>{{ Str::limit($review->details, 100) }}</td>
                         <td>
                             @if($review->category === 'appointment')
                                 @if($review->status)

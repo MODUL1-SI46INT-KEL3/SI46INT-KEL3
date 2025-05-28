@@ -70,7 +70,7 @@
     }
     
     .table th {
-      background-color: #B01116;
+      background-color: #851216;
       color: white;
     }
     
@@ -126,6 +126,7 @@
             background-color: #555;
             color: #fff;
         }
+        
   </style>
 </head>        
 <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar collapse" id="sidebarMenu">
@@ -150,7 +151,7 @@
                         <th style="width: 20%;">Patient Name</th>
                         <th style="width: 10%;">Rating</th>
                         <th style="width: 15%;">Submitted At</th>
-                        <th style="width: 45%;">Details</th>
+                        <th style="width: 50%;">Details</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -24,6 +24,7 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminReviewController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DoctorReviewController;
 
 
 
@@ -112,6 +113,12 @@ Route::prefix('doctordash')->group(function () {
     Route::post('/prescriptions/{prescription}/upload', [PrescriptionController::class, 'upload'])->name('prescriptions.upload.store');
 });
 
+Route::prefix('doctordash')->name('doctor.')->middleware(['auth'])->group(function () {
+    Route::get('/reviews', [DoctorReviewController::class, 'index'])->name('reviews.index');
+});
+
+
+
 //Article
 Route::get('/adminarticle', [AdminArticleController::class, 'index'])->name('adminarticle.index');
 Route::get('/adminarticle/create', [AdminArticleController::class, 'create'])->name('adminarticle.create');
@@ -190,12 +197,15 @@ Route::get('/reviews/appointment', [ReviewController::class, 'index'])->name('re
 Route::get('/reviews/shop', [ReviewController::class, 'index'])->name('reviews.shop');
 
 
-
 Route::prefix('adminreviews')->name('adminreviews.')->group(function () {
     Route::get('/', [AdminReviewController::class, 'index'])->name('index');
     Route::get('/{id}', [AdminReviewController::class, 'show'])->name('show');
     Route::delete('/{id}', [AdminReviewController::class, 'destroy'])->name('destroy');
+    Route::patch('/send/{id}', [AdminReviewController::class, 'markAsSent'])->name('markSent');
+    Route::patch('/retract/{id}', [AdminReviewController::class, 'markAsUnsent'])->name('markUnsent');
 });
+
+
 
 
 // Schedule

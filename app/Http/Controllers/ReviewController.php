@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
-    public function index(Request $request)
+        public function index(Request $request)
     {
         $category = $request->query('category') ?? 'web';
         $reviews = Review::where('category', $category)->latest()->get();
+        $doctors = Doctor::all();
 
-        return view('reviews.index', compact('reviews', 'category'));
+        return view('reviews.index', compact('reviews', 'category', 'doctors'));
     }
+
 
     public function create()
     {
@@ -31,7 +33,7 @@ class ReviewController extends Controller
             'category' => 'required|in:shop,appointment,web',
             'submitted_at' => 'required|date',
             'details' => 'required|string',
-            'doctor_id' => 'required_if:category,appointment|exists:doctor,id',
+            'doctor_id' => 'nullable|exists:doctor,id',
         ]);
 
         $patientName = 'Anonymous';
@@ -57,6 +59,9 @@ class ReviewController extends Controller
             'doctor_id' => $request->doctor_id ?? null,
         ]);
 
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
         return redirect()->route('reviews.index')->with('success', 'Thank you for your review!');
     }
 

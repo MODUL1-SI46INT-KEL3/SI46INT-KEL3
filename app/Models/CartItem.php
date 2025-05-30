@@ -16,6 +16,6 @@ class CartItem extends Model
         return $this->belongsTo(Medicine::class);
     }
 
-    protected $fillable = ['patient_id', 'medicine_id', 'quantity'];
+    protected $fillable = ['patient_id', 'medicine_id', 'quantity', 'selected'];
 
 }

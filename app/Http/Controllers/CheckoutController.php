@@ -14,6 +14,7 @@ class CheckoutController extends Controller
     {
         $cartItems = CartItem::with('medicine')
             ->where('patient_id', Auth::id())
+            ->where('selected', 1)
             ->get();
 
         $total = $cartItems->sum(fn($item) => $item->medicine->price * $item->quantity);
@@ -23,6 +24,7 @@ class CheckoutController extends Controller
         return view('patients.checkout.index', compact('cartItems', 'total', 'serviceFee', 'grandTotal'));
     }
 
+
     public function pay(Request $request)
     {
         $request->validate([
@@ -30,10 +32,13 @@ class CheckoutController extends Controller
         ]);
 
         $patientId = Auth::id();
-        $cartItems = CartItem::with('medicine')->where('patient_id', $patientId)->get();
+        $cartItems = CartItem::with('medicine')
+            ->where('patient_id', $patientId)
+            ->where('selected', 1)
+            ->get();
 
         if ($cartItems->isEmpty()) {
-            return back()->with('error', 'Cart is empty.');
+            return back()->with('error', 'No selected items in cart.');
         }
 
         $total = $cartItems->sum(fn($item) => $item->medicine->price * $item->quantity);
@@ -45,21 +50,24 @@ class CheckoutController extends Controller
         })->implode(', ');
 
         $payment = DB::transaction(function () use ($patientId, $grandTotal, $request, $itemsDescription) {
-        $payment = Payment::create([
-            'patient_id'     => $patientId,
-            'amount'         => $grandTotal,
+            $payment = Payment::create([
+                'patient_id'     => $patientId,
+                'amount'         => $grandTotal,
+                'payment_method' => $request->payment_method,
+                'payment_status' => 'Completed',
+                'item'           => $itemsDescription,
+            ]);
+
+            // Only delete the items that were selected
+            CartItem::where('patient_id', $patientId)->where('selected', 1)->delete();
+
+            return $payment;
+        });
+
+        return redirect()->route('checkout.complete', [
+            'grandTotal' => $grandTotal,
             'payment_method' => $request->payment_method,
-            'payment_status' => 'Completed',
-            'item'           => $itemsDescription,
         ]);
-
-        CartItem::where('patient_id', $patientId)->delete();
-
-        return $payment;
-    });
-
-    return redirect()->route('checkout.complete', [ 'grandTotal' => $grandTotal, 'payment_method' => $request->payment_method,]);
-
     }
 
     public function complete(Request $request)

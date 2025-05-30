@@ -202,14 +202,15 @@ button {
 
 .items{
     display: grid;
-    grid-template-columns: 1fr 95px 100px;
+    grid-template-columns: 1fr 95px 140px;
     align-items: center;
     gap: 1rem;
 }
 
 
     </style>
-    <script src="//unpkg.com/alpinejs" defer></script>
+    <!-- Alpine.js -->
+
 </head>
 <div id="header">
     <header>
@@ -222,33 +223,52 @@ button {
 </div>
 <body class="bg-white text-gray-800">
 
-<div class="container mx-auto p-6">
+<div class="container mx-auto p-6" 
+     x-data="{
+        selectedCount: {{ $cartItems->where('selected', true)->count() }},
+        updateCount(change) {
+            this.selectedCount += change;
+        }
+     }">
     <h2 class="text-2xl font-bold border-b pb-2 mb-4">List of Items</h2>
 
     <div class="flex flex-wrap md:flex-nowrap">
         <div class="w-full md:w-2/3">
             @foreach ($cartItems as $item)
-                <div class="items" border-b py-4" style="height:80px;">
+                <div class="items border-b py-4" style="height:80px;">
                     <div class="flex items-center space-x-4">
-                            <div 
-                                x-data="{
-                                    selected: false,
-                                    checkedIcon: '{{ asset('icons/checked.png') }}',
-                                    uncheckedIcon: '{{ asset('icons/unchecked.png') }}'
-                                }" 
-                                @click="selected = !selected"
-                                class="checkmark-icon cursor-pointer"
-                                :class="selected ? 'bg-red-600' : 'bg-gray-400'"
-                            >
-                                <img :src="selected ? checkedIcon : uncheckedIcon" alt="Check" style="height:24px;width:24px;"/>
-                            </div>
+                        <div 
+                            x-data="{
+                                selected: {{ $item->selected ? 'true' : 'false' }},
+                                checkedIcon: '{{ asset('icons/checked.png') }}',
+                                uncheckedIcon: '{{ asset('icons/unchecked.png') }}',
+                                toggleSelection() {
+                                    axios.post('{{ route('cart.toggleSelect', $item->id) }}')
+                                        .then(response => {
+                                            if (this.selected !== response.data.selected) {
+                                                this.selected = response.data.selected;
+                                                $dispatch('selection-changed', { change: this.selected ? 1 : -1 });
+                                            }
+                                        })
+                                        .catch(error => {
+                                            alert('Failed to update selection');
+                                            console.error(error);
+                                        });
+                                }
+                            }"
+                            @click="toggleSelection"
+                            @selection-changed.window="updateCount($event.detail.change)"
+                            class="checkmark-icon cursor-pointer"
+                            :class="selected ? 'bg-red-600' : 'bg-gray-400'"
+                        >
+                            <img :src="selected ? checkedIcon : uncheckedIcon" alt="Check" style="height:24px;width:24px;" />
+                        </div>
 
-
-                            @if($item->medicine->image && file_exists(public_path($item->medicine->image)))
-                                <img class="medicine-image" src="{{ asset($item->medicine->image) }}" alt="{{ $item->medicine->medicine_name }}" />
-                            @else
-                                <img class="medicine-image" src="{{ asset('images/medicines/default.png') }}" alt="No Image Available" />
-                            @endif
+                        @if($item->medicine->image && file_exists(public_path($item->medicine->image)))
+                            <img class="medicine-image" src="{{ asset($item->medicine->image) }}" alt="{{ $item->medicine->medicine_name }}" />
+                        @else
+                            <img class="medicine-image" src="{{ asset('icons/medicon.png') }}" alt="Medicine" />
+                        @endif
 
                         <div>
                             <p class="font-semibold" style="margin:5px 0;">{{ $item->medicine->medicine_name }}</p>
@@ -260,21 +280,33 @@ button {
                         Rp{{ number_format($item->medicine->price, 2, ',', '.') }}
                     </div>
                     
-                    <div class="flex items-center space-x-2" style="border: 2px solid black; padding: 0.3rem 0.2rem; border-radius: 0.3rem; justify-content: center; align-items: center;">
-                        <form method="POST" action="{{ route('cart.decrease', $item->id) }}" style="margin:2px 0;">
-                            @csrf
-                            <button class="text-red-600 font-bold">
-                                <img src="{{ asset('icons/minus.png') }}" alt="Minus" style="width:16px;height:16px; vertical-align: middle; display: inline-block;" >
+                    <div style="display:flex; width: 145; gap: 5px;">
+                        <div class="flex items-center space-x-2" style="width:100px;border: 2px solid black; padding: 0.3rem 0.2rem; border-radius: 0.3rem; justify-content: center; align-items: center;">
+                            <form method="POST" action="{{ route('cart.decrease', $item->id) }}" style="margin:1px 0;">
+                                @csrf
+                                <button class="text-red-600 font-bold">
+                                    <img src="{{ asset('icons/minus.png') }}" alt="Minus" style="width:16px;height:16px; vertical-align: middle; display: inline-block;">
+                                </button>
+                            </form>
 
-                            </button>
-                        </form>
-                        <span>{{ $item->quantity }}</span>
-                        <form method="POST" action="{{ route('cart.increase', $item->id) }}" style="margin:2px 0;">
-                            @csrf
-                            <button class="text-red-600 font-bold">
-                                <img src="{{ asset('icons/plus.png') }}" alt="Plus" style="width:16px;height:16px; vertical-align: middle; display: inline-block;" >
-                            </button>
-                        </form>
+                            <span style="font-size: 14.5px">{{ $item->quantity }}</span>
+
+                            <form method="POST" action="{{ route('cart.increase', $item->id) }}" style="margin:1px 0;">
+                                @csrf
+                                <button class="text-red-600 font-bold">
+                                    <img src="{{ asset('icons/plus.png') }}" alt="Plus" style="width:16px;height:16px; vertical-align: middle; display: inline-block;">
+                                </button>
+                            </form>
+                        </div>
+
+                         <div class="flex items-center space-x-2" style="border: 2px; background-color:rgb(177, 82, 85); padding: 0.3rem 0.2rem; border-radius: 0.3rem; justify-content: center; align-items: center;">
+                            <form method="POST" action="{{ route('cart.remove', $item->id) }}" style="margin:1px 0;">
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-red-600 font-bold" onclick="return confirm('Are you sure you want to remove this item?')">
+                                    <img src="{{ asset('icons/trash.png') }}" alt="Delete" style="width:16px;height:16px; vertical-align: middle; display: inline-block;">
+                                </button>
+                            </form></div>
                     </div>
 
                 </div>
@@ -292,7 +324,7 @@ button {
             <img src="{{ asset('icons/meds.png') }}" alt="Pills" class="rounded mb-4" style="width:100%;">
             <div class="text-sm text-gray-700">
                 <div style="display: flex; justify-content: space-between; height: 30px;">
-                    <p class="font-bold mb-2" >Your item total:</p>
+                    <p class="font-bold mb-2">Your item total:</p>
                     <p class="text-lg font-bold">
                         Rp{{ number_format($cartItems->sum(fn($item) => $item->medicine->price * $item->quantity), 2, ',', '.') }}
                     </p>
@@ -300,7 +332,13 @@ button {
                 <p><strong>For {{ $cartItems->sum('quantity') }} Items</strong></p>
             </div>
             <form action="{{ route('checkout') }}" method="GET" class="mt-4">
-                <button class="w-full bg-red-700 text-white py-2 rounded shadow" style="font-family: Inter, sans-serif; font-weight:bold;">
+                <button
+                    type="submit"
+                    :disabled="selectedCount === 0"
+                    :class="selectedCount === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-700'"
+                    class="w-full text-white py-2 rounded shadow font-bold"
+                    style="font-family: Inter, sans-serif;"
+                >
                     Continue to Pay
                 </button>
             </form>
@@ -308,4 +346,9 @@ button {
     </div>
 </div>
 
+<!-- Alpine.js -->
+<script src="//unpkg.com/alpinejs"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </body>
+

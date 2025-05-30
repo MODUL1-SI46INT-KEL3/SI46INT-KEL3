@@ -31,8 +31,19 @@ public function add(Request $request, $medicineId)
 
 public function remove($id)
 {
-    CartItem::where('id', $id)->where('patient_id', Auth::id())->delete();
-    return back()->with('success', 'Item removed from cart.');
+    $patientId = auth()->id();
+
+    $cartItem = CartItem::where('id', $id)
+                ->where('patient_id', $patientId)
+                ->first();
+
+    if (!$cartItem) {
+        return redirect()->back()->with('error', 'Item not found.');
+    }
+
+    $cartItem->delete();
+
+    return redirect()->back()->with('success', 'Item removed from cart.');
 }
 
 public function increase($id)
@@ -56,6 +67,18 @@ public function decrease($id)
     }
 
     return redirect()->back();
+}
+
+public function toggleSelect($id)
+{
+    $cartItem = CartItem::where('id', $id)
+        ->where('patient_id', Auth::id())
+        ->firstOrFail();
+
+    $cartItem->selected = !$cartItem->selected;
+    $cartItem->save();
+
+    return response()->json(['selected' => $cartItem->selected]);
 }
 
 }

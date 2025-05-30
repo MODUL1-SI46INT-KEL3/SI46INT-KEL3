@@ -216,7 +216,7 @@
         <div class="review-form" id="reviewFormBox">
             <form action="{{ route('reviews.store') }}" method="POST" id="appointmentReviewForm">
                 @csrf
-                <input type="hidden" name="category" value="appointment">
+                <input type="hidden" name="category" value="web">
                 <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
                 <input type="hidden" name="submitted_at" value="{{ now()->toIso8601String() }}">
                 <div style="text-align: center; margin-bottom: 15px;">

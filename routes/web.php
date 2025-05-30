@@ -253,6 +253,9 @@ Route::middleware('auth')->group(function () {
 Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
 Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 Route::post('/cart/{id}/toggle-select', [CartController::class, 'toggleSelect'])->name('cart.toggleSelect');
+Route::patch('/cart-items/{id}/toggle-selected', [CartItemController::class, 'toggleSelected'])
+    ->name('cart-items.toggle-selected');
+
 
 //Checkout
 Route::middleware('auth')->group(function () {

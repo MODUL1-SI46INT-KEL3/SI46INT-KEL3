@@ -187,7 +187,7 @@
                 <span class="label">Time:</span>
                 <span class="value">
                     @if($appointment->schedule && $appointment->schedule->start_time && $appointment->schedule->end_time)
-                        {{ \Carbon\Carbon::parse($appointment->schedule->start_time)->format('H:i') }} - 
+                        {{ \Carbon\Carbon::parse($appointment->schedule->start_time)->format('H:i') }} -
                         {{ \Carbon\Carbon::parse($appointment->schedule->end_time)->format('H:i') }}
                     @else
                         <span style="color: #dc3545;">N/A</span>
@@ -217,7 +217,6 @@
             <form action="{{ route('reviews.store') }}" method="POST" id="appointmentReviewForm">
                 @csrf
                 <input type="hidden" name="category" value="web">
-                <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
                 <input type="hidden" name="submitted_at" value="{{ now()->toIso8601String() }}">
                 <div style="text-align: center; margin-bottom: 15px;">
                     <label style="font-weight: 600; margin-bottom: 8px; display: block; font-size: 0.9rem;">
@@ -235,10 +234,10 @@
                 <label style="font-weight: 600; margin-bottom: 6px; display: block; font-size: 0.9rem;">
                     Share your feedback:
                 </label>
-                <textarea 
-                    name="details" 
-                    class="form-control" 
-                    rows="3" 
+                <textarea
+                    name="details"
+                    class="form-control"
+                    rows="3"
                     placeholder="How was your booking experience?"
                     required
                 ></textarea>

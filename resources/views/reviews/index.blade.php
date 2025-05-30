@@ -85,6 +85,26 @@
             display: none;
             margin-top: 15px;
         }
+        
+        #reviewSelector, #doctorSelector {
+    padding: 12px 16px !important;
+    font-size: 1.1rem !important;
+    height: 50px !important;
+    width: 100% !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 10px !important;
+    background-color: #fff !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
+    transition: all 0.3s ease !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
+    background-position: right 12px center !important;
+    background-repeat: no-repeat !important;
+    background-size: 16px 12px !important;
+    padding-right: 40px !important;
+}
 
         #star-rating {
             display: flex;
@@ -125,6 +145,7 @@
             background: #f8f9fa;
             padding: 15px;
             border-radius: 10px;
+            margin-top: 20px;
             margin-bottom: 20px;
             border-left: 4px solid #851216;
         }

@@ -33,7 +33,7 @@ class ReviewController extends Controller
             'category' => 'required|in:shop,appointment,web',
             'submitted_at' => 'required|date',
             'details' => 'required|string',
-            'doctor_id' => 'required_if:category,appointment|exists:doctor,id',
+            'doctor_id' => 'nullable|exists:doctor,id',
         ]);
 
         $patientName = 'Anonymous';
@@ -59,6 +59,9 @@ class ReviewController extends Controller
             'doctor_id' => $request->doctor_id ?? null,
         ]);
 
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
         return redirect()->route('reviews.index')->with('success', 'Thank you for your review!');
     }
 

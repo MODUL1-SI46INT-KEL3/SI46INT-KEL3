@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Feedback and Review</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap CSS and Google Fonts -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
@@ -26,7 +28,7 @@
             border-radius: 50%;
             height: 90px;
             width: 90px;
-            margin-left: 50px;  
+            margin-left: 50px;
         }
         .header-logo img {
             float: left;
@@ -85,7 +87,7 @@
             display: none;
             margin-top: 15px;
         }
-        
+
         #reviewSelector, #doctorSelector {
     padding: 12px 16px !important;
     font-size: 1.1rem !important;
@@ -200,7 +202,7 @@
                 Feedback and Review
             </div>
         </div>
-        
+
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert" style="max-width: 600px; text-align: center; margin: 20px auto;">
                 {{ session('success') }}
@@ -256,23 +258,23 @@
                         <input type="hidden" name="doctor_id" id="doctorInput" value="">
                         <input type="hidden" name="rating" id="rating" required>
                         <input type="hidden" name="submitted_at" value="{{ now() }}">
-                        
-                        <textarea 
-                            name="details" 
-                            class="form-control mb-2" 
-                            rows="5" 
+
+                        <textarea
+                            name="details"
+                            class="form-control mb-2"
+                            rows="5"
                             id="reviewTextarea"
                             placeholder="Share your experience with us..."
                             required
                         ></textarea>
-                        
+
                         <button type="submit" class="review-btn" id="submitBtn">
                             Submit Website Review
                         </button>
                     </form>
                 </div>
             </div>
-            
+
             <!-- Right: Image -->
             <div class="col-md-5 d-flex align-items-center justify-content-center form-image-container">
                 <img src="{{ asset('images/review.png') }}" alt="Doctor holding hands" class="img-fluid rounded shadow form-image">
@@ -308,7 +310,7 @@
         // Star rating logic
         const stars = document.querySelectorAll('.star');
         const ratingInput = document.getElementById('rating');
-        
+
         stars.forEach(star => {
             star.addEventListener('click', () => {
                 const value = star.getAttribute('data-value');
@@ -322,7 +324,7 @@
                 });
             });
         });
-        
+
         // Set default selected stars
         stars.forEach(s => s.classList.add('unselected'));
 
@@ -331,10 +333,10 @@
             const selectedCategory = this.value;
             const categoryData = categoryInfo[selectedCategory];
             const doctorContainer = document.getElementById('doctorDropdownContainer');
-            
+
             // Update category input
             document.getElementById('categoryInput').value = selectedCategory;
-            
+
             // Show/hide doctor dropdown
             if (selectedCategory === 'appointment') {
                 doctorContainer.style.display = 'block';
@@ -343,15 +345,15 @@
                 document.getElementById('doctorInput').value = '';
                 document.getElementById('doctorSelector').value = '';
             }
-            
+
             // Update category info display
             document.getElementById('categoryTitle').textContent = categoryData.title;
             document.getElementById('categoryDescription').textContent = categoryData.description;
-            
+
             // Update form elements
             document.getElementById('reviewTextarea').placeholder = categoryData.placeholder;
             document.getElementById('submitBtn').textContent = categoryData.buttonText;
-            
+
             // Reset form rating
             ratingInput.value = '';
             stars.forEach(s => s.classList.add('unselected'));
@@ -366,7 +368,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const currentCategory = document.getElementById('categoryInput').value;
             const categoryData = categoryInfo[currentCategory];
-            
+
             if (categoryData) {
                 document.getElementById('categoryTitle').textContent = categoryData.title;
                 document.getElementById('categoryDescription').textContent = categoryData.description;
@@ -382,15 +384,15 @@
 
         // Form submission with validation
         document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Always prevent default form submission
+
             if (!ratingInput.value) {
-                e.preventDefault();
                 alert('Please select a rating before submitting your review.');
                 return false;
             }
-            
+
             const textarea = document.getElementById('reviewTextarea');
             if (!textarea.value.trim()) {
-                e.preventDefault();
                 alert('Please write some feedback before submitting your review.');
                 textarea.focus();
                 return false;
@@ -399,17 +401,70 @@
             // Validate doctor selection for appointment reviews
             const category = document.getElementById('categoryInput').value;
             const doctorId = document.getElementById('doctorInput').value;
-            
+
             if (category === 'appointment' && !doctorId) {
-                e.preventDefault();
                 alert('Please select a doctor for your appointment review.');
                 document.getElementById('doctorSelector').focus();
                 return false;
             }
 
+            // Get form data
+            const form = document.getElementById('reviewForm');
+            const formData = new FormData(form);
 
-            
+            // For non-appointment categories, remove doctor_id from the form data
+            if (category !== 'appointment') {
+                formData.delete('doctor_id');
+            }
 
+            // Submit form via AJAX
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    const container = document.querySelector('.container');
+                    const rowElement = document.querySelector('.row.d-flex.align-items-stretch');
+
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                    alertDiv.setAttribute('role', 'alert');
+                    alertDiv.style.maxWidth = '600px';
+                    alertDiv.style.textAlign = 'center';
+                    alertDiv.style.margin = '20px auto';
+                    alertDiv.innerHTML = data.message;
+
+                    // Insert alert after the title row
+                    container.insertBefore(alertDiv, rowElement.nextSibling);
+
+                    // Reset form
+                    form.reset();
+                    stars.forEach(s => s.classList.add('unselected'));
+                    ratingInput.value = '';
+
+                    // Auto-scroll to the success message
+                    alertDiv.scrollIntoView({ behavior: 'smooth' });
+
+                    // Auto-dismiss after 5 seconds
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 5000);
+                } else {
+                    // Show error message if any
+                    alert(data.message || 'There was an error submitting your review. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting your review. Please try again.');
+            });
         });
 
         function toggleDoctorDropdown() {

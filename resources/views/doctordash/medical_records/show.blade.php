@@ -103,6 +103,11 @@
       background-color: #dc3545;
       color: white;
     }
+
+    .btn-print {
+      background-color: #28a745;
+      color: white;
+    }
     
     .logout-btn {
       position: absolute;
@@ -214,6 +219,7 @@
                 <td>
                   <div class="btn-group">
                     <a href="{{ route('medical-records.edit', $record->record_id) }}" class="btn btn-edit btn-sm">Edit</a>
+                    <a href="{{ route('medical-records.print', $record->record_id) }}" class="btn btn-print btn-sm" target="_blank">Print</a>
                     <form action="{{ route('medical-records.destroy', $record->record_id) }}" method="POST" class="d-inline">
                       @csrf
                       @method('DELETE')

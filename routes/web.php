@@ -97,6 +97,7 @@ Route::prefix('doctordash')->group(function () {
     Route::put('/medical-records/{record}', [MedicalRecordController::class, 'update'])->name('medical-records.update');
     Route::delete('/medical-records/{record}', [MedicalRecordController::class, 'destroy'])->name('medical-records.destroy');
     Route::get('/medical-records/{record}/download', [MedicalRecordController::class, 'downloadFile'])->name('medical-records.download');
+    Route::get('/medical-records/{record}/print', [MedicalRecordController::class, 'printReport'])->name('medical-records.print');
 });
 
 // Prescription Records

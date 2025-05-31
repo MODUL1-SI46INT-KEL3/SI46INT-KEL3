@@ -212,4 +212,38 @@ class MedicalRecordController extends Controller
         
         return Storage::disk('public')->download($medicalRecord->file_path);
     }
+
+        
+    /**
+     * Print the medical record as a report.
+     */
+    public function printReport($id)
+    {
+        $medicalRecord = MedicalRecord::with(['patient', 'doctor'])->findOrFail($id);
+        
+        // Parse assessment, diagnosis, and treatment from notes
+        $notes = $medicalRecord->notes;
+        $assessment = '';
+        $diagnosis = '';
+        $treatment = '';
+        
+        if (preg_match('/Assessment: ([^\n]+)/', $notes, $matches)) {
+            $assessment = $matches[1];
+        }
+        
+        if (preg_match('/Diagnosis: ([^\n]+)/', $notes, $matches)) {
+            $diagnosis = $matches[1];
+        }
+        
+        if (preg_match('/Treatment: ([^\n]+)/', $notes, $matches)) {
+            $treatment = $matches[1];
+        }
+        
+        // Add these parsed values to the medical record object for the view
+        $medicalRecord->assessment = $assessment;
+        $medicalRecord->diagnosis = $diagnosis;
+        $medicalRecord->treatment = $treatment;
+        
+        return view('doctordash.medical_records.print', compact('medicalRecord'));
+    }
 }

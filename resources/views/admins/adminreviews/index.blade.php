@@ -114,7 +114,7 @@
                                     <form method="POST" action="{{ route('adminreviews.markUnsent', $review->id) }}" style="display:inline;">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="btn btn-danger danger2" onclick="return confirm('Are you sure you want to retract this review?');">
+                                        <button dusk="unsend-button" type="submit" class="btn btn-danger danger2" onclick="return confirm('Are you sure you want to retract this review?');">
                                             <img src="{{ asset('icons/cancelsend.png') }}" alt="Retract" style="width: 20px; height: 20px;">
                                         </button>
                                     </form>
@@ -123,7 +123,7 @@
                                     <form method="POST" action="{{ route('adminreviews.markSent', $review->id) }}" style="display:inline;">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="btn btn-warning">
+                                        <button dusk="send-button" type="submit" class="btn btn-warning">
                                             <img src="{{ asset('icons/send.png') }}" alt="Send" style="width: 20px; height: 20px;">
                                         </button>
                                     </form>
@@ -133,7 +133,7 @@
                             <form action="{{ route('adminreviews.destroy', $review->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="confirmDelete(event)">
+                                <button dusk="delete-button" type="submit" class="btn btn-danger" onclick="confirmDelete(event)">
                                     <img src="{{ asset('icons/trash.png') }}" alt="Send" style="width: 20px; height: 20px;">  
                                 </button>
                             </form>

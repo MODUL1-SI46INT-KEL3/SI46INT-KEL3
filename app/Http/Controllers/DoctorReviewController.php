@@ -2,35 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Review;
 
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Review;
 
 class DoctorReviewController extends Controller
 {
-    // public function index()
-    // {
-    //     $doctorId = Auth::guard('doctor')->id();
+    public function index(Request $request)
+{
+    $doctors = \App\Models\Doctor::orderBy('name')->get();
 
-    //     // Fetch only 'appointment' reviews that are sent and belong to this doctor
-    //     $reviews = Review::where('category', 'appointment')
-    //                      ->where('status', 1)
-    //                      ->where('doctor_id', $doctorId)
-    //                      ->orderBy('submitted_at', 'desc')
-    //                      ->get();
+    $query = Review::where('category', 'appointment')
+                   ->where('status', 1)
+                   ->orderBy('submitted_at', 'desc');
 
-    //     return view('doctordash.reviews.index', compact('reviews'));
-    // }
-        public function index()
-    {
+    $selectedDoctorId = $request->query('doctor_id');
 
-        $reviews = Review::where('category', 'appointment')
-                         ->where('status', 1)
-                         ->orderBy('submitted_at', 'desc')
-                         ->get();
-
-        return view('doctordash.reviews.index', compact('reviews'));
+    if ($selectedDoctorId) {
+        $query->where('doctor_id', $selectedDoctorId);
     }
+
+    $reviews = $query->get();
+
+    // Pass the logged-in doctor as $auth for display
+    $auth = Auth::guard('doctor')->user();
+
+    return view('doctordash.reviews.index', compact('reviews', 'doctors', 'selectedDoctorId', 'auth'));
+}
+
 }
 

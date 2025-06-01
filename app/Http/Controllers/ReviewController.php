@@ -43,15 +43,6 @@ class ReviewController extends Controller
 
         $details = $request->details;
         
-        // Add context based on category
-        if ($request->category === 'appointment' && $request->doctor_id) {
-            $doctor = Doctor::find($request->doctor_id);
-            if ($doctor) {
-                $details = "Reviewing Appointment with Dr. {$doctor->name}: " . $details;
-            }
-        } elseif ($request->category === 'shop') {
-            $details = "Medicine Purchase Review: " . $details;
-        }
 
         Review::create([
             'patient_name' => $patientName,

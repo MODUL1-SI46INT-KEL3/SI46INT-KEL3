@@ -84,8 +84,9 @@
             <tr>
                 <th style="width: 5%;">No.</th>
                 <th style="width: 20%;">Patient Name</th>
-                <th style="width: 10%;">Rating</th>
-                <th style="width: 20%;">Submitted At</th>
+                <th style="width: 8%;">Rating</th>
+                <th style="width: 10%;">Category</th>
+                <th style="width: 12%;">Submitted At</th>
                 <th style="width: 35%;">Details</th>
                 <th style="width: 10%;">Actions</th>
             </tr>
@@ -96,6 +97,15 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $review->patient_name }}</td>
                         <td>{{ $review->rating }} / 5</td>
+                        @php
+                            $categoryMap = [
+                                'web' => 'Web',
+                                'appointment' => 'Appt.',
+                                'shop' => 'Shop',
+                            ];
+                        @endphp
+
+                        <td>{{ $categoryMap[$review->category] ?? $review->category }}</td>
                         <td>{{ \Carbon\Carbon::parse($review->submitted_at)->format('d M Y') }}</td>
                         <td>{{ Str::limit($review->details, 100) }}</td>
                         <td>

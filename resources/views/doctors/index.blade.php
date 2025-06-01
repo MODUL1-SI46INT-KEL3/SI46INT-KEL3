@@ -222,7 +222,9 @@
                 <p class="card-text">Specialty: {{ $doctor->specialization->name }}</p>
                 <p class="clinic-text">Clinic: Telkomedika</p>
                 <p class="working-hours">Working Hours: {{ $doctor->working_hours }}</p>
-                <a href="#" class="btn btn-primary">Book Now</a> 
+                <a href="{{ route('appointments.step1_specialist', ['doctor_id' => $doctor->id]) }}" class="btn btn-primary">
+                    Book Now
+                </a>
               </div>
             </div>
           </div>

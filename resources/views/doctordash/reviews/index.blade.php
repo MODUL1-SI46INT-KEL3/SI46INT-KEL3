@@ -129,14 +129,51 @@
         
   </style>
 </head>        
+
 <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar collapse" id="sidebarMenu">
     @include('navigation.docbar')
 </nav>
 
 <div class="content">
     <div class="page-header d-flex justify-content-between align-items-center">
-        <h2>Customer Reviews for Appointments</h2>
+        <h2 style="max-width: 70%;">
+            Customer Reviews
+            @if($selectedDoctorId)
+                @php
+                    $selectedDoctor = $doctors->firstWhere('id', $selectedDoctorId);
+                @endphp
+                @if($selectedDoctor)
+                    – Appointments for Dr. {{ $selectedDoctor->name }}
+                @endif
+            @else
+                – All Appointments
+            @endif
+        </h2>
+
+        <div class=" d-flex justify-content-end align-items-center" style="display: flex; gap: 5px; flex-direction: column; margin:5px 0">
+            <select id="doctorSelect" class="form-control" style="width: 200px;" onchange="filterByDoctor()">
+                <option value="">All Doctors</option>
+                @foreach($doctors as $doctor)
+                    <option value="{{ $doctor->id }}" {{ $selectedDoctorId == $doctor->id ? 'selected' : '' }}>
+                        Dr. {{ $doctor->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
     </div>
+
+    <script>
+        function filterByDoctor() {
+            const doctorId = document.getElementById('doctorSelect').value;
+            const url = new URL(window.location.href);
+            if (doctorId) {
+                url.searchParams.set('doctor_id', doctorId);
+            } else {
+                url.searchParams.delete('doctor_id');
+            }
+            window.location.href = url.toString();
+        }
+    </script>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -161,7 +198,7 @@
                             <td>{{ $review->patient_name }}</td>
                             <td>{{ $review->rating }} / 5</td>
                             <td>{{ \Carbon\Carbon::parse($review->submitted_at)->format('d M Y') }}</td>
-                            <td>{{ Str::limit($review->details, 80) }}</td>
+                            <td>{{ \Illuminate\Support\Str::limit($review->details, 80) }}</td>
                         </tr>
                     @empty
                         <tr>

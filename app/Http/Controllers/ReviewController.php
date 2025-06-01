@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
-        public function index(Request $request)
+    public function index(Request $request)
     {
         $category = $request->query('category') ?? 'web';
         $reviews = Review::where('category', $category)->latest()->get();
@@ -17,7 +17,6 @@ class ReviewController extends Controller
 
         return view('reviews.index', compact('reviews', 'category', 'doctors'));
     }
-
 
     public function create()
     {
@@ -33,7 +32,7 @@ class ReviewController extends Controller
             'category' => 'required|in:shop,appointment,web',
             'submitted_at' => 'required|date',
             'details' => 'required|string',
-            'doctor_id' => 'nullable|exists:doctor,id',
+            'doctor_id' => 'required_if:category,appointment|exists:doctor,id',
         ]);
 
         $patientName = 'Anonymous';
@@ -43,11 +42,15 @@ class ReviewController extends Controller
         }
 
         $details = $request->details;
+        
+        // Add context based on category
         if ($request->category === 'appointment' && $request->doctor_id) {
             $doctor = Doctor::find($request->doctor_id);
             if ($doctor) {
                 $details = "Reviewing Appointment with Dr. {$doctor->name}: " . $details;
             }
+        } elseif ($request->category === 'shop') {
+            $details = "Medicine Purchase Review: " . $details;
         }
 
         Review::create([
@@ -59,9 +62,14 @@ class ReviewController extends Controller
             'doctor_id' => $request->doctor_id ?? null,
         ]);
 
-        if ($request->expectsJson()) {
-            return response()->json(['success' => true]);
+        // Return JSON response for AJAX requests
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Thank you for your review!'
+            ]);
         }
+
         return redirect()->route('reviews.index')->with('success', 'Thank you for your review!');
     }
 

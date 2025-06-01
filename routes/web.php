@@ -186,16 +186,14 @@ Route::resource('symptoms', SymptomController::class);
 Route::resource('medicines', MedicineController::class);
 
 
-// Feedback n Review
+// Feedback & Review Routes
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
-Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
-Route::get('/reviews/create', [ReviewController::class, 'create'])->name('reviews.create'); // add if missing
-Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-Route::get('/reviews/create', [ReviewController::class, 'create']);
 Route::get('/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::get('/reviews/{review}', [ReviewController::class, 'show'])->name('reviews.show');
+Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
 
 

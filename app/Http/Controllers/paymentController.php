@@ -62,5 +62,23 @@ class PaymentController extends Controller
         Payment::findOrFail($id)->delete();
         return redirect()->route('adminpayments.index')->with('success', 'Payment deleted successfully.');
     }
+    public function showPaymentSuccess(Request $request)
+{
+    // Data yang sudah ada
+    $grandTotal = $request->get('grandTotal');
+    $paymentMethod = $request->get('paymentMethod');
+    
+    // Tambahkan reviews untuk medicine
+    $medicineReviews = Review::where('category', 'shop')
+                            ->latest()
+                            ->take(5)
+                            ->get();
+    
+    return view('medicine.payment-success', compact(
+        'grandTotal', 
+        'paymentMethod', 
+        'medicineReviews'
+    ));
+}
 }
 

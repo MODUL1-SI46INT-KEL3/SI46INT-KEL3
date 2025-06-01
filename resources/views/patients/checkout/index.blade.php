@@ -21,6 +21,18 @@
                 <td style="text-align: right; padding: 12px;">Rp{{ number_format($item->medicine->price * $item->quantity, 0, ',', '.') }}</td>
             </tr>
             @endforeach
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 12px;">Service Fee</td>
+                <td style="text-align: center; padding: 12px;">-</td>
+                <td style="text-align: right; padding: 12px;">Rp 500</td>
+                <td style="text-align: right; padding: 12px;">Rp 500</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 12px;">Service Fee 2</td>
+                <td style="text-align: center; padding: 12px;">-</td>
+                <td style="text-align: right; padding: 12px;">Rp 500</td>
+                <td style="text-align: right; padding: 12px;">Rp 500</td>
+            </tr>
         </tbody>
     </table>
 

@@ -65,7 +65,7 @@
                         <form action="{{ route('cart.add', $medicine->id) }}" method="POST">
                             @csrf
                             <input type="number" name="quantity" value="1" min="1" class="quantity-input" style="height:30px; width:30px; border-radius: 3px;">
-                            <button type="submit" class="add-to-cart-button" title="Add this item to your cart">
+                            <button dusk="submit-cart" type="submit" class="add-to-cart-button" title="Add this item to your cart">
                                 Add to Cart
                             </button>
                         </form>
@@ -86,7 +86,7 @@
 
             </div>
         </div>
-        <a href="{{ route('cart.index') }}" class="cart-summary-button">See Cart</a>
+        <a dusk='see-cart' href="{{ route('cart.index') }}" class="cart-summary-button">See Cart</a>
     </div>
     @endif
 

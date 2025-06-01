@@ -237,7 +237,7 @@ button {
             @foreach ($cartItems as $item)
                 <div class="items border-b py-4" style="height:80px;">
                     <div class="flex items-center space-x-4">
-                        <div 
+                        <div dusk="select"
                             x-data="{
                                 selected: {{ $item->selected ? 'true' : 'false' }},
                                 checkedIcon: '{{ asset('icons/checked.png') }}',
@@ -333,6 +333,8 @@ button {
             </div>
             <form action="{{ route('checkout') }}" method="GET" class="mt-4">
                 <button
+
+                    dusk="checkout-button"
                     type="submit"
                     :disabled="selectedCount === 0"
                     :class="selectedCount === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-700'"

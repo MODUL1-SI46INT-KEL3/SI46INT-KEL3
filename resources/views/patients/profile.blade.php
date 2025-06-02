@@ -43,6 +43,11 @@
 
         <div class="actions">
             <div class="profile-edit">
+                <a href="{{ route('patients.prescriptions')}}">
+                    <button>My Prescriptions</button>
+                </a>
+            </div>
+            <div class="profile-edit">
                 <a href="{{ route('patients.edit', $patient->id) }}">
                     <button>Edit Profile</button>
                 </a>

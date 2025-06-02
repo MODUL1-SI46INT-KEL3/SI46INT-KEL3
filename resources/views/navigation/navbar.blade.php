@@ -45,7 +45,7 @@
                         <ul style="list-style-type:none;" class="nav">
                             <li class="main_nav"><a href="{{ url('medicines') }}">Medicine</a></li> 
                             <li class="main_nav"><a href="{{ url('symptoms') }}">Check Symptoms</a></li>
-                            <li class="main_nav"><a href="{{ url('articles') }}">Article</a></li>
+                            <li class="main_nav"><a href="{{ url('articles') }}">Articles</a></li>
                             <li class="main_nav"><a href="/">Review Us</a></li>
                             <li class="gradient">
                                 <a href="{{ url('appointments') }}"><button> Book Appointment > </button></a>

@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-
+    
                     <div class="profile">
                         <a href="{{ route('patients.profile') }}"><img src="{{ asset('icons/profile.png') }}" alt="Your Profile"></a>
                     </div>
@@ -50,7 +50,7 @@
                             <li class="main_nav"><a href="{{ url('doctors') }}">Doctors</a></li>
                             <li class="main_nav"><a href="{{ url('symptoms') }}">Check Symptoms</a></li>
                             <li class="main_nav"><a href="{{ url('medicines') }}">Medicine</a></li> 
-                            <li class="main_nav"><a href="{{ route('patients.prescriptions') }}">My Prescriptions</a></li>
+                            <li class="main_nav"><a href="{{ url('articles') }}">Articles</a></li>
                             <li class="main_nav"><a href="/reviews">Review Us</a></li>
                             <li class="gradient">
                                 <a href="{{ route('appointments.step1_specialist') }}"><button> Book Appointment > </button></a>

@@ -22,7 +22,7 @@
         <h1>Create New Article</h1>
         <a href="<?php echo e(route('adminarticle.index')); ?>" class="btn btn-primary">Back to Article List</a>
     </div>
-    <form method="POST" action="<?php echo e(route('adminarticle.store')); ?>" enctype="multipart/form-data">
+    <form method="POST" action="<?php echo e(route('adminarticle.store')); ?>">
     <?php echo csrf_field(); ?>
     <div class="mb-3">
         <label for="header" class="form-label">Header</label>

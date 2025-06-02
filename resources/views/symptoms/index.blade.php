@@ -172,9 +172,7 @@
             </div>
         </div>
 
-        <div class="text-left mt-3">
-            <a href="{{ url('appointments/create') }}"><button class="btn btn-primary">Book Now!</button></a>
-        </div>
+
     </div>
 
     <footer>
